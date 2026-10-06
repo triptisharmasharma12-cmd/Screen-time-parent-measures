@@ -1,178 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Participant Questionnaire</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f7fb;
-      color: #222;
-    }
-    .container {
-      max-width: 760px;
-      margin: 40px auto;
-      padding: 28px;
-      background: white;
-      border-radius: 14px;
-      box-shadow: 0 4px 20px rgba(0,0,0,.08);
-    }
-    h1 { margin-top: 0; font-size: 26px; }
-    .subtitle { color: #555; margin-bottom: 28px; }
-    .question { margin: 24px 0; }
-    label.title {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 10px;
-    }
-    input[type="text"], input[type="number"] {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #bbb;
-      border-radius: 8px;
-      font-size: 16px;
-    }
-    .option {
-      display: block;
-      padding: 12px;
-      margin: 8px 0;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    .option:hover { background: #f3f6fa; }
-    button {
-      width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 8px;
-      background: #1f5eff;
-      color: white;
-      font-size: 17px;
-      cursor: pointer;
-      margin-top: 20px;
-    }
-    button:disabled { opacity: .6; cursor: not-allowed; }
-    #message {
-      margin-top: 16px;
-      text-align: center;
-      font-weight: 600;
-    }
-    .required { color: #c00; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parent Questionnaire – Screen Time</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#eef4ff,#f8fbff);color:#1f2937;min-height:100vh}
+.wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.card{width:min(900px,100%);min-height:650px;background:#fff;border-radius:24px;box-shadow:0 12px 40px rgba(0,0,0,.12);padding:40px;display:flex;flex-direction:column}
+.progress{height:8px;background:#e5e7eb;border-radius:8px;overflow:hidden;margin-bottom:28px}
+.progress>div{height:100%;background:#4f46e5;transition:.25s}
+h1{font-size:28px;margin:0 0 10px}
+h2{font-size:24px;line-height:1.35;margin:0 0 14px}
+.subtitle{color:#6b7280;line-height:1.55;margin-bottom:22px}
+.question{flex:1;overflow:auto}
+label{display:block;font-size:17px;margin:14px 0 8px;font-weight:600}
+.option{display:flex;align-items:flex-start;gap:10px;font-weight:400;background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:13px;margin:9px 0;cursor:pointer}
+.option:hover{background:#f1f5f9}
+input[type=text],input[type=number],select,textarea{width:100%;padding:13px 14px;border:1px solid #cbd5e1;border-radius:10px;font-size:16px}
+input[type=radio],input[type=checkbox]{margin-top:4px;transform:scale(1.15)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.box{border:1px solid #e5e7eb;border-radius:14px;padding:16px;margin-top:15px}
+.box h3{margin:0 0 12px;font-size:18px}
+.nav{display:flex;justify-content:space-between;gap:12px;margin-top:25px}
+button{border:0;border-radius:10px;padding:13px 24px;font-size:16px;font-weight:700;cursor:pointer}
+.back{background:#e5e7eb;color:#111827}.next,.submit{background:#4f46e5;color:#fff}.next:disabled,.submit:disabled{opacity:.5;cursor:not-allowed}
+.note{font-size:14px;color:#6b7280;margin-top:8px}
+.error{color:#b91c1c;background:#fee2e2;padding:10px;border-radius:8px;margin-top:10px;display:none}
+.success{text-align:center;padding:50px 20px}
+@media(max-width:700px){.card{padding:24px;min-height:90vh}.grid{grid-template-columns:1fr}h1{font-size:24px}h2{font-size:20px}}
+</style>
 </head>
-
 <body>
-<div class="container">
-  <h1>Participant Information</h1>
-  <p class="subtitle">प्रतिभागी की जानकारी</p>
-
-  <form id="questionnaire">
-
-    <div class="question">
-      <label class="title">a. Name / नाम: <span class="required">*</span></label>
-      <input type="text" name="name" required>
-    </div>
-
-    <div class="question">
-      <label class="title">b. Age / आयु: <span class="required">*</span></label>
-      <input type="number" name="age" min="1" max="100" required>
-    </div>
-
-    <div class="question">
-      <label class="title">c. Grade in which your child studies / आपका बच्चा किस कक्षा में पढ़ता है? <span class="required">*</span></label>
-
-      <label class="option">
-        <input type="radio" name="grade" value="Class 6 / कक्षा 6" required>
-        Class 6 / कक्षा 6
-      </label>
-
-      <label class="option">
-        <input type="radio" name="grade" value="Class 7 / कक्षा 7">
-        Class 7 / कक्षा 7
-      </label>
-
-      <label class="option">
-        <input type="radio" name="grade" value="Class 8 / कक्षा 8">
-        Class 8 / कक्षा 8
-      </label>
-    </div>
-
-    <div class="question">
-      <label class="title">d. Relationship to the child / बच्चे के साथ संबंध <span class="required">*</span></label>
-
-      <label class="option">
-        <input type="radio" name="relationship" value="Mother / माता" required>
-        Mother / माता
-      </label>
-
-      <label class="option">
-        <input type="radio" name="relationship" value="Father / पिता">
-        Father / पिता
-      </label>
-
-      <label class="option">
-        <input type="radio" name="relationship" value="Guardian / अभिभावक">
-        Guardian / अभिभावक
-      </label>
-    </div>
-
-    <button type="submit" id="submitBtn">Submit / जमा करें</button>
-    <div id="message"></div>
-  </form>
+<div class="wrap"><div class="card">
+<div class="progress"><div id="bar"></div></div>
+<div id="app"></div>
+<div class="nav" id="nav">
+<button class="back" id="back" onclick="prev()">Back</button>
+<button class="next" id="next" onclick="next()">Next</button>
 </div>
+</div></div>
 
 <script>
-  // Replace this URL after creating your Google Apps Script Web App.
-  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzV42KJIVZtThmBg6jFH2YwA1j3QUaPKykTKeB5b0eMiKC4v4yJ5jrP_K3pGfZaiBH_ZA/exec";
+const SCRIPT_URL="https://script.google.com/macros/s/AKfycbzV42KJIVZtThmBg6jFH2YwA1j3QUaPKykTKeB5b0eMiKC4v4yJ5jrP_K3pGfZaiBH_ZA/exec";
+const A=(v)=>v.map(x=>`<label class="option"><input type="${x.type||'radio'}" name="${x.name}" value="${x.value}"> <span>${x.label}</span></label>`).join("");
+const questions=[
+{title:"1. Parent and Child Details / अभिभावक एवं बच्चे का विवरण",html:`
+<label>Name of child / बच्चे का नाम</label><input name="name" type="text" required>
+<label>Age of child / बच्चे की आयु</label><input name="age" type="number" min="1" max="25" required>
+<label>Child's class / बच्चे की कक्षा</label>${A([{name:"grade",value:"Class 6",label:"Class 6 / कक्षा 6"},{name:"grade",value:"Class 7",label:"Class 7 / कक्षा 7"},{name:"grade",value:"Class 8",label:"Class 8 / कक्षा 8"}])}
+<label>Your relationship to the child / बच्चे से आपका संबंध</label>${A([{name:"relationship",value:"Mother",label:"Mother / माता"},{name:"relationship",value:"Father",label:"Father / पिता"},{name:"relationship",value:"Guardian",label:"Guardian / अभिभावक"}])}`},
+{title:"2. Area of residence / निवास का क्षेत्र",html:A([{name:"area",value:"Urban",label:"Urban / शहरी"},{name:"area",value:"Suburban",label:"Suburban / उपनगरीय"},{name:"area",value:"Rural",label:"Rural / ग्रामीण"}])},
+{title:"3. Highest education completed / उच्चतम शैक्षिक योग्यता",html:A([{name:"education",value:"High School",label:"High School / हाई स्कूल"},{name:"education",value:"Intermediate",label:"Intermediate / इंटरमीडिएट"},{name:"education",value:"Graduate",label:"Graduate / स्नातक"},{name:"education",value:"Post Graduate",label:"Post Graduate / स्नातकोत्तर"},{name:"education",value:"Doctorate",label:"Doctorate / डॉक्टरेट"},{name:"education",value:"Other",label:"Other / अन्य"}])+'<label>If other, please specify / यदि अन्य, तो बताएं</label><input name="education_other" type="text">'},
+{title:"4. Family structure / परिवार की संरचना",html:A([{name:"family_structure",value:"Joint Family",label:"Joint Family / संयुक्त परिवार"},{name:"family_structure",value:"Nuclear Family",label:"Nuclear Family / एकल परिवार"},{name:"family_structure",value:"Single Parent",label:"Single Parent / एकल अभिभावक परिवार"}])},
+{title:"5. Number of children / बच्चों की संख्या",html:A([{name:"number_children",value:"0",label:"0"},{name:"number_children",value:"1",label:"1"},{name:"number_children",value:"2",label:"2"},{name:"number_children",value:"3",label:"3"},{name:"number_children",value:"More than 3",label:"More than 3 / 3 से अधिक"}])},
+{title:"6. Occupation / व्यवसाय",html:'<input name="occupation" type="text" required>'},
+{title:"7. Annual family income / परिवार की वार्षिक आय",html:A([{name:"annual_income",value:"Less than 1 lakh",label:"Less than 1 lakh / 1 लाख से कम"},{name:"annual_income",value:"1–3 lakh",label:"1–3 lakh / 1–3 लाख"},{name:"annual_income",value:"3–5 lakh",label:"3–5 lakh / 3–5 लाख"},{name:"annual_income",value:"5–7.5 lakh",label:"5–7.5 lakh / 5–7.5 लाख"},{name:"annual_income",value:"7.5–10 lakh",label:"7.5–10 lakh / 7.5–10 लाख"},{name:"annual_income",value:"10–20 lakh",label:"10–20 lakh / 10–20 लाख"},{name:"annual_income",value:"More than 20 lakh",label:"More than 20 lakh / 20 लाख से अधिक"},{name:"annual_income",value:"Prefer not to say",label:"Prefer not to say / बताना नहीं चाहते"}])},
+{title:"8. Content monitoring / सामग्री पर निगरानी",html:"<p>Do you monitor what content your child accesses? / क्या आप अपने बच्चे द्वारा देखी या उपयोग की जाने वाली सामग्री पर नज़र रखते हैं?</p>"+A([{name:"content_monitoring",value:"Yes",label:"Yes / हाँ"},{name:"content_monitoring",value:"No",label:"No / नहीं"}])},
+{title:"9. Health condition or ongoing treatment / स्वास्थ्य संबंधी स्थिति या उपचार",html:"<p>Does your child have any health-related condition or ongoing treatment that may affect participation in the study activities? / क्या आपके बच्चे को कोई ऐसी स्वास्थ्य संबंधी समस्या है या उपचार चल रहा है जो अध्ययन की गतिविधियों में भागीदारी को प्रभावित कर सकता है?</p>"+A([{name:"health_condition",value:"Yes",label:"Yes / हाँ"},{name:"health_condition",value:"No",label:"No / नहीं"},{name:"health_condition",value:"Prefer not to disclose",label:"Prefer not to disclose / बताना नहीं चाहते"}])},
+{title:"10. Conditions / स्थितियाँ",html:"<p>To the best of your knowledge, does your child currently have any of the following conditions that may affect participation in this study? / आपकी जानकारी के अनुसार, क्या आपके बच्चे में निम्नलिखित में से कोई स्थिति है?</p>"+A([{type:"checkbox",name:"conditions",value:"ADHD",label:"ADHD"},{type:"checkbox",name:"conditions",value:"Specific learning difficulty, such as Dyslexia",label:"Specific learning difficulty, such as Dyslexia / विशिष्ट अधिगम संबंधी कठिनाई, जैसे डिस्लेक्सिया"},{type:"checkbox",name:"conditions",value:"Neurological condition",label:"Neurological condition / तंत्रिका संबंधी स्थिति"},{type:"checkbox",name:"conditions",value:"None",label:"None / इनमें से कोई नहीं"},{type:"checkbox",name:"conditions",value:"Prefer not to disclose",label:"Prefer not to disclose / बताना नहीं चाहते"}])},
 
-  const form = document.getElementById("questionnaire");
-  const button = document.getElementById("submitBtn");
-  const message = document.getElementById("message");
+{title:"Screen Time Measurement 1 / स्क्रीन टाइम मापन 1",html:"<p>What type of digital device(s) do you have at home? [You can choose multiple options] / आपके घर में किस प्रकार के डिजिटल डिवाइस हैं? [आप एक से अधिक विकल्प चुन सकते हैं]</p>"+A([{type:"checkbox",name:"home_devices",value:"Computer",label:"Computer / कंप्यूटर"},{type:"checkbox",name:"home_devices",value:"Smartphone",label:"Smartphone / स्मार्टफोन"},{type:"checkbox",name:"home_devices",value:"iPad or tablets",label:"iPad or tablets / आइपैड या टैबलेट"},{type:"checkbox",name:"home_devices",value:"Laptop",label:"Laptop / लैपटॉप"},{type:"checkbox",name:"home_devices",value:"Television",label:"Television / टेलीविज़न"},{type:"checkbox",name:"home_devices",value:"Other",label:"Other / अन्य"}])+'<label>If other / यदि अन्य</label><input name="home_devices_other" type="text">'},
+{title:"Screen Time Measurement 2 / स्क्रीन टाइम मापन 2",html:'<label>How many digital devices are there in your family in total? / आपके परिवार में कुल कितने डिजिटल उपकरण हैं?</label><input name="total_digital_devices" type="number" min="0">'},
+{title:"Screen Time Measurement 3 / स्क्रीन टाइम मापन 3",html:"<p>Does your child own a personal mobile phone? / क्या आपके बच्चे के पास अपना व्यक्तिगत मोबाइल फ़ोन है?</p>"+A([{name:"personal_mobile",value:"Yes",label:"Yes / हाँ"},{name:"personal_mobile",value:"No",label:"No / नहीं"}])},
+{title:"Screen Time Measurement 4 / स्क्रीन टाइम मापन 4",html:"<p>Which device does your child use most of the time? [You can choose multiple options] / आपका बच्चा ज़्यादातर कौन सा डिवाइस इस्तेमाल करता है?</p>"+A([{type:"checkbox",name:"most_used_devices",value:"Personal phone",label:"Personal phone / व्यक्तिगत फोन"},{type:"checkbox",name:"most_used_devices",value:"Mother’s phone",label:"Mother’s phone / माता का फोन"},{type:"checkbox",name:"most_used_devices",value:"Father’s phone",label:"Father’s phone / पिता का फोन"},{type:"checkbox",name:"most_used_devices",value:"iPad",label:"iPad / आइपैड"},{type:"checkbox",name:"most_used_devices",value:"Laptop",label:"Laptop / लैपटॉप"},{type:"checkbox",name:"most_used_devices",value:"Computer",label:"Computer / कंप्यूटर"},{type:"checkbox",name:"most_used_devices",value:"Other",label:"Other / अन्य"}])+'<label>If other / यदि अन्य</label><input name="most_used_devices_other" type="text">'},
+{title:"Screen Time Measurement 5 / स्क्रीन टाइम मापन 5",html:"<p>When does your child prefer to use digital devices? / आपका बच्चा डिजिटल उपकरणों का उपयोग कब करना पसंद करता है?</p>"+A([{type:"checkbox",name:"device_time_preference",value:"After waking",label:"After waking / जागने के बाद"},{type:"checkbox",name:"device_time_preference",value:"Before school",label:"Before school / स्कूल से पहले"},{type:"checkbox",name:"device_time_preference",value:"After school",label:"After school / स्कूल के बाद"},{type:"checkbox",name:"device_time_preference",value:"Late evening",label:"Late evening / देर शाम"},{type:"checkbox",name:"device_time_preference",value:"Before bed",label:"Before bed / सोने से पहले"}])},
+{title:"Screen Time Measurement 6 / स्क्रीन टाइम मापन 6",html:dualHours("How much total time does your child spend using digital screens? / आपका बच्चा डिजिटल स्क्रीन का उपयोग कुल कितना समय करता है?","total_screen_school_day","total_screen_holiday")},
+{title:"Screen Time Measurement 7 / स्क्रीन टाइम मापन 7",html:"<p>Does your child take breaks while using digital screens? / क्या आपका बच्चा डिजिटल स्क्रीन का उपयोग करते समय बीच-बीच में ब्रेक लेता है?</p>"+A([{name:"screen_breaks",value:"Yes",label:"Yes / हाँ"},{name:"screen_breaks",value:"No",label:"No / नहीं"}])},
+{title:"Screen Time Measurement 8 / स्क्रीन टाइम मापन 8",html:"<p>If yes, how many separate periods or sessions does your child usually use digital screens during the day? / यदि हाँ, तो आपका बच्चा आमतौर पर दिन में कितनी अलग-अलग अवधि या सत्रों में डिजिटल स्क्रीन का उपयोग करता है?</p>"+A([{name:"screen_sessions",value:"1 session",label:"1 session / 1 बार"},{name:"screen_sessions",value:"2 sessions",label:"2 sessions / 2 बार"},{name:"screen_sessions",value:"3 sessions",label:"3 sessions / 3 बार"},{name:"screen_sessions",value:"4 sessions",label:"4 sessions / 4 बार"},{name:"screen_sessions",value:"5 or more sessions",label:"5 or more sessions / 5 या अधिक बार"}])},
+{title:"Screen Time Measurement 9 / स्क्रीन टाइम मापन 9",html:'<p>Please mention the approximate duration of each screen-use session. / कृपया डिजिटल स्क्रीन के उपयोग की प्रत्येक अवधि का अनुमानित समय लिखें।</p><div class="grid"><div><label>Morning / सुबह</label><input name="screen_morning" type="text"></div><div><label>Afternoon / दोपहर</label><input name="screen_afternoon" type="text"></div><div><label>Evening / शाम</label><input name="screen_evening" type="text"></div><div><label>Night / रात</label><input name="screen_night" type="text"></div></div>'},
+{title:"Screen Time Measurement 10 / स्क्रीन टाइम मापन 10",html:dualHours("How much total time does your child spend using digital screens for recreational purposes? / आपका बच्चा मनोरंजन के लिए डिजिटल स्क्रीन का उपयोग करने में कुल कितना समय बिताता है?","recreational_screen_school_day","recreational_screen_holiday")},
+{title:"Screen Time Measurement 11 / स्क्रीन टाइम मापन 11",html:dualHours("How much total time does your child spend using digital screens for active recreational purposes? / आपका बच्चा मनोरंजन के लिए डिजिटल स्क्रीन का सक्रिय रूप से उपयोग करने में कुल कितना समय बिताता है?","active_recreational_school_day","active_recreational_holiday")},
+{title:"Screen Time Measurement 12 / स्क्रीन टाइम मापन 12",html:dualHours("How much total time does your child spend using digital screens for educational purposes? / आपका बच्चा शैक्षिक उद्देश्यों के लिए डिजिटल स्क्रीन का उपयोग करने में कुल कितना समय बिताता है?","educational_screen_school_day","educational_screen_holiday")},
+{title:"Screen Time Measurement 13 / स्क्रीन टाइम मापन 13",html:dualPurpose()},
+{title:"Screen Time Measurement 14 / स्क्रीन टाइम मापन 14",html:"<p>Does your child use a mobile phone, tablet, or other digital devices in bed before going to sleep? / क्या आपका बच्चा सोने से पहले बिस्तर पर मोबाइल, टैबलेट या अन्य डिजिटल उपकरणों का इस्तेमाल करता है?</p>"+A([{name:"device_in_bed_before_sleep",value:"Yes",label:"Yes / हाँ"},{name:"device_in_bed_before_sleep",value:"No",label:"No / नहीं"}])},
 
-  form.addEventListener("submit", async function(event) {
-    event.preventDefault();
+{title:"Sleep Measure 1 / नींद मापन 1",html:dualSleep()},
+{title:"Sleep Measure 2 / नींद मापन 2",html:dualWake()},
+{title:"Sleep Measure 3 / नींद मापन 3",html:dualBed()},
+{title:"Sleep Measure 4 / नींद मापन 4",html:"<p>Does your child take a nap or sleep during the daytime? / क्या आपका बच्चा दिन के समय झपकी लेता या सोता है?</p>"+A([{name:"daytime_nap",value:"Yes",label:"Yes / हाँ"},{name:"daytime_nap",value:"No",label:"No / नहीं"}])+'<label>If yes, approximately how many hours does your child sleep during the day? / यदि हाँ, तो आपका बच्चा दिन में लगभग कितने घंटे सोता है?</label><input name="daytime_sleep_hours" type="text">'}
+];
 
-    if (GOOGLE_SCRIPT_URL.includes("PASTE_YOUR")) {
-      message.textContent = "Google Sheet connection is not configured yet.";
-      message.style.color = "#b00020";
-      return;
-    }
+function opts(name){
+return ["1 hour / 1 घंटा","2 hours / 2 घंटे","3 hours / 3 घंटे","4 hours / 4 घंटे","More than 4 hours / 4 घंटे से अधिक"].map((x,i)=>({name,value:String(i+1),label:x}));
+}
+function dualHours(q,n1,n2){return `<div class="grid"><div class="box"><h3>On school days / स्कूल के दिनों में</h3>${A(opts(n1))}</div><div class="box"><h3>On holidays / छुट्टी के दिनों में</h3>${A(opts(n2))}</div></div>`}
+function dualSleep(){let o=[["Less than 5 hours","5 घंटे से कम"],["6 hours","6 घंटे"],["7 hours","7 घंटे"],["8 hours","8 घंटे"],["More than 8 hours","8 घंटे से अधिक"]];return dualFrom(o,"How many hours does your child sleep? / आपका बच्चा कितने घंटे सोता है?","sleep_hours_school_day","sleep_hours_holiday")}
+function dualFrom(arr,q,n1,n2){return `<p>${q}</p><div class="grid"><div class="box"><h3>On school days / स्कूल के दिनों में</h3>${A(arr.map(x=>({name:n1,value:x[0],label:x[0]+" / "+x[1]})))}</div><div class="box"><h3>On holidays / छुट्टी के दिनों में</h3>${A(arr.map(x=>({name:n2,value:x[0],label:x[0]+" / "+x[1]})))}</div></div>`}
+function dualWake(){let a=["Earlier than 06:00 am / सुबह 06:00 बजे से पहले","06:00 am–06:30 am / सुबह 06:00–06:30 बजे","06:30 am–07:00 am / सुबह 06:30–07:00 बजे","07:00 am–07:30 am / सुबह 07:00–07:30 बजे","07:30 am–08:00 am / सुबह 07:30–08:00 बजे","08:00 am–08:30 am / सुबह 08:00–08:30 बजे","08:30 am–09:00 am / सुबह 08:30–09:00 बजे","09:00 am–09:30 am / सुबह 09:00–09:30 बजे","Later than 09:30 am / सुबह 09:30 बजे के बाद"];return dualSame(a,"At what time does your child wake up in the morning? / आपका बच्चा सुबह किस समय उठता है?","wake_time_school_day","wake_time_holiday")}
+function dualBed(){let a=["Earlier than 09:00 pm / रात 09:00 बजे से पहले","09:00 pm–09:30 pm / रात 09:00–09:30 बजे","09:30 pm–10:00 pm / रात 09:30–10:00 बजे","10:00 pm–10:30 pm / रात 10:00–10:30 बजे","10:30 pm–11:00 pm / रात 10:30–11:00 बजे","11:00 pm–11:30 pm / रात 11:00–11:30 बजे","Later than 11:30 pm / रात 11:30 बजे के बाद"];return dualSame(a,"At what time does your child go to bed? / आपका बच्चा किस समय सोने जाता है?","bedtime_school_day","bedtime_holiday")}
+function dualSame(a,q,n1,n2){return `<p>${q}</p><div class="grid"><div class="box"><h3>On school days / स्कूल के दिनों में</h3>${A(a.map(x=>({name:n1,value:x,label:x})))}</div><div class="box"><h3>On holidays / छुट्टी के दिनों में</h3>${A(a.map(x=>({name:n2,value:x,label:x})))}</div></div>`}
+function dualPurpose(){
+const a=[["Video gaming","वीडियो गेम खेलना"],["Cognitive games (like chess, Sudoku, etc.)","संज्ञानात्मक खेल (जैसे शतरंज, सुडोकू आदि)"],["Active social media use (uploading dance videos, commenting, posting content, etc.)","सोशल मीडिया का सक्रिय उपयोग (डांस वीडियो अपलोड करना, टिप्पणी करना, सामग्री पोस्ट करना आदि)"],["Scrolling reels / watching videos passively","रील्स स्क्रॉल करना / वीडियो निष्क्रिय रूप से देखना"],["Other","अन्य"]];
+return `<p>What is the main purpose for which your child uses digital gadgets for recreation? [You may select multiple options] / आपका बच्चा मनोरंजन के लिए डिजिटल गैजेट्स का उपयोग मुख्य रूप से किस उद्देश्य से करता है? [आप एक से अधिक विकल्प चुन सकते हैं]</p><div class="grid"><div class="box"><h3>On school days / स्कूल के दिनों में</h3>${A(a.map(x=>({type:"checkbox",name:"recreation_purpose_school_day",value:x[0],label:x[0]+" / "+x[1]})))}<input name="recreation_purpose_school_day_other" placeholder="If Other / यदि अन्य"></div><div class="box"><h3>On holidays / छुट्टी के दिनों में</h3>${A(a.map(x=>({type:"checkbox",name:"recreation_purpose_holiday",value:x[0],label:x[0]+" / "+x[1]})))}<input name="recreation_purpose_holiday_other" placeholder="If Other / यदि अन्य"></div></div>`}
 
-    button.disabled = true;
-    button.textContent = "Submitting... / जमा हो रहा है...";
-    message.textContent = "";
-
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
-
-    data.submittedAt = new Date().toISOString();
-
-    try {
-      await fetch(GOOGLE_SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8"
-        },
-        body: JSON.stringify(data)
-      });
-
-      form.reset();
-      message.textContent = "Your response has been submitted successfully. / आपकी प्रतिक्रिया सफलतापूर्वक जमा हो गई है।";
-      message.style.color = "green";
-    } catch (error) {
-      message.textContent = "Submission failed. Please try again. / प्रतिक्रिया जमा नहीं हुई। कृपया पुनः प्रयास करें।";
-      message.style.color = "#b00020";
-      console.error(error);
-    }
-
-    button.disabled = false;
-    button.textContent = "Submit / जमा करें";
-  });
+let page=0; const data={};
+function collect(){
+document.querySelectorAll("#app input,#app select,#app textarea").forEach(el=>{
+ if((el.type==="checkbox"||el.type==="radio")&&!el.checked)return;
+ if(el.name){ if(el.type==="checkbox"){data[el.name]=data[el.name]?data[el.name]+", "+el.value:el.value}else data[el.name]=el.value; }
+});
+}
+function render(){
+const q=questions[page]; document.getElementById("app").innerHTML=`<div class="question"><h2>${q.title}</h2><div class="subtitle">${page===0?"Please answer based on your child's usual pattern. / कृपया अपने बच्चे के सामान्य व्यवहार के आधार पर उत्तर दें।":""}</div>${q.html}<div id="err" class="error">Please answer the required question before continuing. / कृपया आगे बढ़ने से पहले आवश्यक प्रश्न का उत्तर दें।</div></div>`;
+Object.keys(data).forEach(k=>{document.querySelectorAll(`[name="${CSS.escape(k)}"]`).forEach(el=>{if(el.type==="checkbox"||el.type==="radio")el.checked=data[k].split(", ").includes(el.value);else el.value=data[k]})});
+document.getElementById("back").style.visibility=page===0?"hidden":"visible";
+document.getElementById("next").textContent=page===questions.length-1?"Submit":"Next";
+document.getElementById("bar").style.width=((page+1)/questions.length*100)+"%";
+}
+function valid(){
+let required=document.querySelectorAll("#app [required]");
+for(const el of required)if(!el.value.trim()){document.getElementById("err").style.display="block";return false}
+let groups=[...document.querySelectorAll("#app input[type=radio]")].reduce((a,e)=>(a[e.name]=a[e.name]||e,a),{});
+for(const n in groups)if(!document.querySelector(`input[name="${CSS.escape(n)}"]:checked`)){document.getElementById("err").style.display="block";return false}
+return true;
+}
+function next(){if(!valid())return;collect();if(page<questions.length-1){page++;render()}else submitForm()}
+function prev(){collect();if(page>0){page--;render()}}
+async function submitForm(){
+document.getElementById("nav").style.display="none";document.getElementById("app").innerHTML="<div class='success'><h1>Submitting…</h1><p>Please wait.</p></div>";
+data.submittedAt=new Date().toISOString();
+try{
+await fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(data)});
+document.getElementById("app").innerHTML="<div class='success'><h1>Thank you! / धन्यवाद!</h1><p>Your response has been submitted successfully. / आपकी प्रतिक्रिया सफलतापूर्वक जमा हो गई है।</p></div>";
+}catch(e){document.getElementById("app").innerHTML="<div class='success'><h1>Submission completed</h1><p>If you see this page, please inform the researcher to verify the response in the spreadsheet.</p></div>"}
+}
+render();
 </script>
 </body>
 </html>
