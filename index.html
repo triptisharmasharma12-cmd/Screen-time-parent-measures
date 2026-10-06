@@ -95,7 +95,32 @@ function dualPurpose(){
 const a=[["Video gaming","वीडियो गेम खेलना"],["Cognitive games (like chess, Sudoku, etc.)","संज्ञानात्मक खेल (जैसे शतरंज, सुडोकू आदि)"],["Active social media use (uploading dance videos, commenting, posting content, etc.)","सोशल मीडिया का सक्रिय उपयोग (डांस वीडियो अपलोड करना, टिप्पणी करना, सामग्री पोस्ट करना आदि)"],["Scrolling reels / watching videos passively","रील्स स्क्रॉल करना / वीडियो निष्क्रिय रूप से देखना"],["Other","अन्य"]];
 return `<p>What is the main purpose for which your child uses digital gadgets for recreation? [You may select multiple options] / आपका बच्चा मनोरंजन के लिए डिजिटल गैजेट्स का उपयोग मुख्य रूप से किस उद्देश्य से करता है? [आप एक से अधिक विकल्प चुन सकते हैं]</p><div class="grid"><div class="box"><h3>On school days / स्कूल के दिनों में</h3>${A(a.map(x=>({type:"checkbox",name:"recreation_purpose_school_day",value:x[0],label:x[0]+" / "+x[1]})))}<input name="recreation_purpose_school_day_other" placeholder="If Other / यदि अन्य"></div><div class="box"><h3>On holidays / छुट्टी के दिनों में</h3>${A(a.map(x=>({type:"checkbox",name:"recreation_purpose_holiday",value:x[0],label:x[0]+" / "+x[1]})))}<input name="recreation_purpose_holiday_other" placeholder="If Other / यदि अन्य"></div></div>`}
 
-let page=0; const data={};
+let page=-1; const data={};
+const introHTML=`
+<div class="question">
+<h1>Measures for Active Screen Time / सक्रिय स्क्रीन टाइम का मापन</h1>
+<div class="subtitle"><strong>Research Title:</strong><br>Comparative Impact of Screen Time and Green Time on Proactive and Reactive Inhibitory Control among Middle Stage Students: An Event-Related Potential Analysis</div>
+<div class="box"><strong>Researcher:</strong> Tripti Sharma<br><strong>Supervisor:</strong> Prof. Sona Ahuja<br><strong>Department:</strong> Department of Pedagogical Sciences<br><strong>Institution:</strong> Dayalbagh Educational Institute, Agra</div>
+<h2>Purpose / उद्देश्य</h2>
+<p>This form is designed to assess your child’s <strong>screen time</strong>, including the frequency and duration of digital device use for recreational and educational purposes. The information collected will be used solely for academic research purposes.</p>
+<p>यह प्रपत्र आपके बच्चे के <strong>स्क्रीन टाइम</strong> का आकलन करने के लिए तैयार किया गया है, जिसमें मनोरंजन और शैक्षिक उद्देश्यों के लिए डिजिटल उपकरणों के उपयोग की आवृत्ति और अवधि शामिल है। इस प्रपत्र से प्राप्त जानकारी का उपयोग केवल शैक्षणिक शोध उद्देश्यों के लिए किया जाएगा।</p>
+<h2>Instructions / निर्देश</h2>
+<ul>
+<li>Please answer each question based on your child’s usual screen-use pattern. कृपया प्रत्येक प्रश्न का उत्तर अपने बच्चे के सामान्य स्क्रीन उपयोग के तरीके को ध्यान में रखते हुए दें।</li>
+<li>Consider your <strong>child’s typical daily screen use, rather than an unusually high or low screen-use day.</strong> अपने बच्चे के <strong>सामान्य दैनिक स्क्रीन उपयोग को ध्यान में रखें, न कि किसी असामान्य रूप से अधिक या कम स्क्रीन उपयोग वाले दिन को।</strong></li>
+<li>Include digital device use such as mobile phones, tablets, computers, laptops, and other digital devices. इसमें मोबाइल फ़ोन, टैबलेट, कंप्यूटर, लैपटॉप तथा अन्य डिजिटल उपकरणों का उपयोग शामिल करें।</li>
+<li><strong>For recreational screen time, include activities such as playing video games, cognitive games, actively using social media, creating or posting content, commenting, and watching or scrolling through videos and reels.</strong> मनोरंजन के लिए <strong>स्क्रीन उपयोग में वीडियो गेम खेलना, संज्ञानात्मक खेल खेलना, सोशल मीडिया का सक्रिय उपयोग करना, सामग्री बनाना या पोस्ट करना, टिप्पणी करना तथा वीडियो और रील्स देखना या स्क्रॉल करना</strong> शामिल करें।</li>
+<li>For educational screen time, include activities such as online classes, studying, educational videos, reading, completing assignments, or other school-related learning activities using digital devices. शैक्षिक स्क्रीन उपयोग में ऑनलाइन कक्षाएँ, पढ़ाई करना, शैक्षिक वीडियो देखना, पढ़ना, असाइनमेंट पूरा करना या डिजिटल उपकरणों के माध्यम से की जाने वाली अन्य शैक्षिक गतिविधियाँ शामिल करें।</li>
+<li>Do not include time spent using digital devices for school activities during regular school hours, unless specifically asked in the question. नियमित स्कूल समय के दौरान स्कूल की गतिविधियों के लिए डिजिटल उपकरणों के उपयोग का समय इसमें शामिल न करें, जब तक कि प्रश्न में विशेष रूप से न पूछा गया हो।</li>
+<li>Select the response that best represents your child’s usual screen-use pattern. उस विकल्प का चयन करें जो आपके बच्चे के सामान्य स्क्रीन उपयोग को सबसे अच्छी तरह दर्शाता हो।</li>
+<li>There are no right or wrong answers. Please answer honestly and carefully based on your child’s usual routine. इसमें कोई सही या गलत उत्तर नहीं है। कृपया अपने बच्चे की सामान्य दिनचर्या के आधार पर ईमानदारी और सावधानीपूर्वक उत्तर दें।</li>
+<li>Please answer all questions. कृपया सभी प्रश्नों का उत्तर दें।</li>
+</ul>
+<h2>Note / ध्यान दें</h2>
+<p>Your responses will be kept confidential and will be used only for academic research purposes. आपके द्वारा दी गई जानकारी को गोपनीय रखा जाएगा और इसका उपयोग केवल शैक्षणिक शोध उद्देश्यों के लिए किया जाएगा।</p>
+<h2>Demographic Information / जनसांख्यिकीय जानकारी</h2>
+<p>These variables are collected to understand differences in the participants' development, social background, and environmental conditions. इन जानकारियों को प्रतिभागियों के विकास, सामाजिक पृष्ठभूमि और पर्यावरणीय परिस्थितियों में अंतर को समझने के लिए एकत्र किया जा रहा है।</p>
+</div>`;
 function collect(){
 document.querySelectorAll("#app input,#app select,#app textarea").forEach(el=>{
  if((el.type==="checkbox"||el.type==="radio")&&!el.checked)return;
@@ -103,6 +128,14 @@ document.querySelectorAll("#app input,#app select,#app textarea").forEach(el=>{
 });
 }
 function render(){
+if(page===-1){
+ document.getElementById("app").innerHTML=introHTML;
+ document.getElementById("nav").style.display="flex";
+ document.getElementById("back").style.visibility="hidden";
+ document.getElementById("next").textContent="Start Questionnaire / प्रश्नावली शुरू करें";
+ document.getElementById("bar").style.width="0%";
+ return;
+}
 const q=questions[page]; document.getElementById("app").innerHTML=`<div class="question"><h2>${q.title}</h2><div class="subtitle">${page===0?"Please answer based on your child's usual pattern. / कृपया अपने बच्चे के सामान्य व्यवहार के आधार पर उत्तर दें।":""}</div>${q.html}<div id="err" class="error">Please answer the required question before continuing. / कृपया आगे बढ़ने से पहले आवश्यक प्रश्न का उत्तर दें।</div></div>`;
 Object.keys(data).forEach(k=>{document.querySelectorAll(`[name="${CSS.escape(k)}"]`).forEach(el=>{if(el.type==="checkbox"||el.type==="radio")el.checked=data[k].split(", ").includes(el.value);else el.value=data[k]})});
 document.getElementById("back").style.visibility=page===0?"hidden":"visible";
@@ -116,8 +149,8 @@ let groups=[...document.querySelectorAll("#app input[type=radio]")].reduce((a,e)
 for(const n in groups)if(!document.querySelector(`input[name="${CSS.escape(n)}"]:checked`)){document.getElementById("err").style.display="block";return false}
 return true;
 }
-function next(){if(!valid())return;collect();if(page<questions.length-1){page++;render()}else submitForm()}
-function prev(){collect();if(page>0){page--;render()}}
+function next(){if(page===-1){page=0;render();return;} if(!valid())return;collect();if(page<questions.length-1){page++;render()}else submitForm()}
+function prev(){if(page===-1)return; collect();if(page>0){page--;render()}else{page=-1;render()}}
 async function submitForm(){
 document.getElementById("nav").style.display="none";document.getElementById("app").innerHTML="<div class='success'><h1>Submitting…</h1><p>Please wait.</p></div>";
 data.submittedAt=new Date().toISOString();
