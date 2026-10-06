@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Participant Questionnaire</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      color: #222;
+    }
+    .container {
+      max-width: 760px;
+      margin: 40px auto;
+      padding: 28px;
+      background: white;
+      border-radius: 14px;
+      box-shadow: 0 4px 20px rgba(0,0,0,.08);
+    }
+    h1 { margin-top: 0; font-size: 26px; }
+    .subtitle { color: #555; margin-bottom: 28px; }
+    .question { margin: 24px 0; }
+    label.title {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    input[type="text"], input[type="number"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #bbb;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    .option {
+      display: block;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .option:hover { background: #f3f6fa; }
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      background: #1f5eff;
+      color: white;
+      font-size: 17px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    button:disabled { opacity: .6; cursor: not-allowed; }
+    #message {
+      margin-top: 16px;
+      text-align: center;
+      font-weight: 600;
+    }
+    .required { color: #c00; }
+  </style>
+</head>
+
+<body>
+<div class="container">
+  <h1>Participant Information</h1>
+  <p class="subtitle">प्रतिभागी की जानकारी</p>
+
+  <form id="questionnaire">
+
+    <div class="question">
+      <label class="title">a. Name / नाम: <span class="required">*</span></label>
+      <input type="text" name="name" required>
+    </div>
+
+    <div class="question">
+      <label class="title">b. Age / आयु: <span class="required">*</span></label>
+      <input type="number" name="age" min="1" max="100" required>
+    </div>
+
+    <div class="question">
+      <label class="title">c. Grade in which your child studies / आपका बच्चा किस कक्षा में पढ़ता है? <span class="required">*</span></label>
+
+      <label class="option">
+        <input type="radio" name="grade" value="Class 6 / कक्षा 6" required>
+        Class 6 / कक्षा 6
+      </label>
+
+      <label class="option">
+        <input type="radio" name="grade" value="Class 7 / कक्षा 7">
+        Class 7 / कक्षा 7
+      </label>
+
+      <label class="option">
+        <input type="radio" name="grade" value="Class 8 / कक्षा 8">
+        Class 8 / कक्षा 8
+      </label>
+    </div>
+
+    <div class="question">
+      <label class="title">d. Relationship to the child / बच्चे के साथ संबंध <span class="required">*</span></label>
+
+      <label class="option">
+        <input type="radio" name="relationship" value="Mother / माता" required>
+        Mother / माता
+      </label>
+
+      <label class="option">
+        <input type="radio" name="relationship" value="Father / पिता">
+        Father / पिता
+      </label>
+
+      <label class="option">
+        <input type="radio" name="relationship" value="Guardian / अभिभावक">
+        Guardian / अभिभावक
+      </label>
+    </div>
+
+    <button type="submit" id="submitBtn">Submit / जमा करें</button>
+    <div id="message"></div>
+  </form>
+</div>
+
+<script>
+  // Replace this URL after creating your Google Apps Script Web App.
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzV42KJIVZtThmBg6jFH2YwA1j3QUaPKykTKeB5b0eMiKC4v4yJ5jrP_K3pGfZaiBH_ZA/exec";
+
+  const form = document.getElementById("questionnaire");
+  const button = document.getElementById("submitBtn");
+  const message = document.getElementById("message");
+
+  form.addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    if (GOOGLE_SCRIPT_URL.includes("PASTE_YOUR")) {
+      message.textContent = "Google Sheet connection is not configured yet.";
+      message.style.color = "#b00020";
+      return;
+    }
+
+    button.disabled = true;
+    button.textContent = "Submitting... / जमा हो रहा है...";
+    message.textContent = "";
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    data.submittedAt = new Date().toISOString();
+
+    try {
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify(data)
+      });
+
+      form.reset();
+      message.textContent = "Your response has been submitted successfully. / आपकी प्रतिक्रिया सफलतापूर्वक जमा हो गई है।";
+      message.style.color = "green";
+    } catch (error) {
+      message.textContent = "Submission failed. Please try again. / प्रतिक्रिया जमा नहीं हुई। कृपया पुनः प्रयास करें।";
+      message.style.color = "#b00020";
+      console.error(error);
+    }
+
+    button.disabled = false;
+    button.textContent = "Submit / जमा करें";
+  });
+</script>
+</body>
+</html>
