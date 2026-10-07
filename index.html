@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -164,6 +165,102 @@ select:focus{
   font-size:15px;
 }
 
+/* =========================================================
+   QUESTION IMAGES
+   ========================================================= */
+
+.question-image-wrap{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  margin:14px 0 22px;
+}
+
+.question-image{
+  width:100%;
+  max-width:620px;
+  height:220px;
+  object-fit:contain;
+  border-radius:16px;
+  border:1px solid #d7e7f7;
+  background:#f8fbff;
+  padding:6px;
+}
+
+/* Images used above individual answer options */
+
+.image-options{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+  margin-top:18px;
+}
+
+.image-option{
+  border:1px solid #d7e7f7;
+  border-radius:16px;
+  background:#f7fbff;
+  padding:12px;
+  cursor:pointer;
+  transition:.2s;
+  text-align:center;
+}
+
+.image-option:hover{
+  background:#edf6ff;
+  border-color:#90caf9;
+  transform:translateY(-2px);
+}
+
+.image-option img{
+  width:100%;
+  height:150px;
+  object-fit:cover;
+  border-radius:12px;
+  display:block;
+  margin-bottom:10px;
+}
+
+.image-option label{
+  margin:0;
+  font-weight:500;
+  cursor:pointer;
+  text-align:left;
+}
+
+.image-option input{
+  margin-right:7px;
+  transform:scale(1.15);
+}
+
+@media(max-width:700px){
+
+  .card{
+    padding:24px;
+    min-height:90vh;
+  }
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .image-options{
+    grid-template-columns:1fr;
+  }
+
+  .question-image{
+    height:190px;
+  }
+
+  h1{
+    font-size:24px;
+  }
+
+  h2{
+    font-size:20px;
+  }
+}
+
 .nav{
   display:flex;
   justify-content:space-between;
@@ -239,26 +336,6 @@ button{
   margin-bottom:10px;
 }
 
-@media(max-width:700px){
-
-  .card{
-    padding:24px;
-    min-height:90vh;
-  }
-
-  .grid{
-    grid-template-columns:1fr;
-  }
-
-  h1{
-    font-size:24px;
-  }
-
-  h2{
-    font-size:20px;
-  }
-}
-
 </style>
 </head>
 
@@ -307,6 +384,96 @@ const SCRIPT_URL =
 
 
 /* =========================================================
+   IMAGE FILE NAMES
+   All images are currently in the repository ROOT.
+   ========================================================= */
+
+const IMG = {
+
+  urban:
+    "Urban Life.png",
+
+  suburban:
+    "Suburban Life.png",
+
+  rural:
+    "Rural Life.png",
+
+  education:
+    "highest education.jpg",
+
+  joint:
+    "joint family.png",
+
+  nuclear:
+    "nuclear family.png",
+
+  singleParent:
+    "single parent family.png",
+
+  occupation:
+    "occupation.png",
+
+  parentsMonitor:
+    "parents monitor.png",
+
+  health:
+    "health related.png",
+
+  breaks:
+    "breaks.png",
+
+  deviceTime:
+    "when to use digital device.png",
+
+  /* -------------------------------------------------------
+     The following filenames are based on the image names
+     you mentioned. If your actual GitHub filenames differ,
+     change ONLY these names.
+     ------------------------------------------------------- */
+
+  recreational:
+    "recreational.png",
+
+  totalTime:
+    "total time.png",
+
+  activeRecreational:
+    "active recreational time.png",
+
+  purpose:
+    "purpose.png",
+
+  sleepHours:
+    "sleep hours.png",
+
+  wakeUp:
+    "wake up time.png",
+
+  daytimeNap:
+    "daytime nap.png"
+};
+
+
+/* =========================================================
+   IMAGE FUNCTION
+   ========================================================= */
+
+function image(file, alt="Question image"){
+
+  return `
+    <div class="question-image-wrap">
+      <img
+        class="question-image"
+        src="${encodeURI(file)}"
+        alt="${alt}"
+        onerror="this.style.display='none'">
+    </div>
+  `;
+}
+
+
+/* =========================================================
    OPTION GENERATOR
    ========================================================= */
 
@@ -315,9 +482,10 @@ const A = (v) => v.map(x => `
 <label class="option">
 
 <input
-type="${x.type || 'radio'}"
-name="${x.name}"
-value="${x.value}">
+  type="${x.type || 'radio'}"
+  name="${x.name}"
+  value="${x.value}"
+  ${x.required ? "required" : ""}>
 
 <span>${x.label}</span>
 
@@ -327,14 +495,53 @@ value="${x.value}">
 
 
 /* =========================================================
+   IMAGE OPTION GENERATOR
+   ========================================================= */
+
+function imageOptions(name,items){
+
+  return `
+  <div class="image-options">
+
+  ${items.map(x=>`
+
+    <div class="image-option">
+
+      <img
+        src="${encodeURI(x.image)}"
+        alt="${x.alt || x.label}"
+        onerror="this.style.display='none'">
+
+      <label>
+
+        <input
+          type="radio"
+          name="${name}"
+          value="${x.value}"
+          required>
+
+        ${x.label}
+
+      </label>
+
+    </div>
+
+  `).join("")}
+
+  </div>
+  `;
+}
+
+
+/* =========================================================
    QUESTIONS
    ========================================================= */
 
 const questions = [
 
-/* ---------------------------------------------------------
+/* =========================================================
    DEMOGRAPHIC INFORMATION
-   --------------------------------------------------------- */
+   ========================================================= */
 
 {
 title:"1. Demographic Information / जनसांख्यिकीय जानकारी",
@@ -387,19 +594,22 @@ ${A([
 {
 name:"grade",
 value:"Class 6",
-label:"Class 6 / कक्षा 6"
+label:"Class 6 / कक्षा 6",
+required:true
 },
 
 {
 name:"grade",
 value:"Class 7",
-label:"Class 7 / कक्षा 7"
+label:"Class 7 / कक्षा 7",
+required:true
 },
 
 {
 name:"grade",
 value:"Class 8",
-label:"Class 8 / कक्षा 8"
+label:"Class 8 / कक्षा 8",
+required:true
 }
 
 ])}
@@ -414,19 +624,22 @@ ${A([
 {
 name:"relationship",
 value:"Mother",
-label:"Mother / माता"
+label:"Mother / माता",
+required:true
 },
 
 {
 name:"relationship",
 value:"Father",
-label:"Father / पिता"
+label:"Father / पिता",
+required:true
 },
 
 {
 name:"relationship",
 value:"Guardian",
-label:"Guardian / अभिभावक"
+label:"Guardian / अभिभावक",
+required:true
 }
 
 ])}
@@ -435,33 +648,33 @@ label:"Guardian / अभिभावक"
 },
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    AREA
-   --------------------------------------------------------- */
+   ========================================================= */
 
 {
 title:"2. Area of residence / निवास का क्षेत्र",
 
 html:
 
-A([
+imageOptions("area",[
 
 {
-name:"area",
 value:"Urban",
-label:"Urban / शहरी"
+label:"Urban / शहरी",
+image:IMG.urban
 },
 
 {
-name:"area",
 value:"Suburban",
-label:"Suburban / उपनगरीय"
+label:"Suburban / उपनगरीय",
+image:IMG.suburban
 },
 
 {
-name:"area",
 value:"Rural",
-label:"Rural / ग्रामीण"
+label:"Rural / ग्रामीण",
+image:IMG.rural
 }
 
 ])
@@ -469,51 +682,61 @@ label:"Rural / ग्रामीण"
 },
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    EDUCATION
-   --------------------------------------------------------- */
+   ========================================================= */
 
 {
 title:"3. Highest education completed / उच्चतम शैक्षिक योग्यता",
 
 html:
 
+image(IMG.education,"Highest education")
+
++
+
 A([
 
 {
 name:"education",
 value:"High School",
-label:"High School / हाई स्कूल"
+label:"High School / हाई स्कूल",
+required:true
 },
 
 {
 name:"education",
 value:"Intermediate",
-label:"Intermediate / इंटरमीडिएट"
+label:"Intermediate / इंटरमीडिएट",
+required:true
 },
 
 {
 name:"education",
 value:"Graduate",
-label:"Graduate / स्नातक"
+label:"Graduate / स्नातक",
+required:true
 },
 
 {
 name:"education",
 value:"Post Graduate",
-label:"Post Graduate / स्नातकोत्तर"
+label:"Post Graduate / स्नातकोत्तर",
+required:true
 },
 
 {
 name:"education",
 value:"Doctorate",
-label:"Doctorate / डॉक्टरेट"
+label:"Doctorate / डॉक्टरेट",
+required:true
 },
 
 {
 name:"education",
 value:"Other",
-label:"Other / अन्य"
+label:"Other / अन्य",
+required:true
 }
 
 ])
@@ -540,33 +763,33 @@ placeholder="Please specify / कृपया लिखें">
 },
 
 
-/* ---------------------------------------------------------
-   FAMILY
-   --------------------------------------------------------- */
+/* =========================================================
+   FAMILY STRUCTURE
+   ========================================================= */
 
 {
 title:"4. Family structure / परिवार की संरचना",
 
 html:
 
-A([
+imageOptions("family_structure",[
 
 {
-name:"family_structure",
 value:"Joint Family",
-label:"Joint Family / संयुक्त परिवार"
+label:"Joint Family / संयुक्त परिवार",
+image:IMG.joint
 },
 
 {
-name:"family_structure",
 value:"Nuclear Family",
-label:"Nuclear Family / एकल परिवार"
+label:"Nuclear Family / एकल परिवार",
+image:IMG.nuclear
 },
 
 {
-name:"family_structure",
 value:"Single Parent",
-label:"Single Parent / एकल अभिभावक परिवार"
+label:"Single Parent / एकल अभिभावक परिवार",
+image:IMG.singleParent
 }
 
 ])
@@ -574,9 +797,9 @@ label:"Single Parent / एकल अभिभावक परिवार"
 },
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    NUMBER OF CHILDREN
-   --------------------------------------------------------- */
+   ========================================================= */
 
 {
 title:"5. Number of children / बच्चों की संख्या",
@@ -588,31 +811,36 @@ A([
 {
 name:"number_children",
 value:"0",
-label:"0"
+label:"0",
+required:true
 },
 
 {
 name:"number_children",
 value:"1",
-label:"1"
+label:"1",
+required:true
 },
 
 {
 name:"number_children",
 value:"2",
-label:"2"
+label:"2",
+required:true
 },
 
 {
 name:"number_children",
 value:"3",
-label:"3"
+label:"3",
+required:true
 },
 
 {
 name:"number_children",
 value:"More than 3",
-label:"More than 3 / 3 से अधिक"
+label:"More than 3 / 3 से अधिक",
+required:true
 }
 
 ])
@@ -620,14 +848,24 @@ label:"More than 3 / 3 से अधिक"
 },
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    OCCUPATION
-   --------------------------------------------------------- */
+   ========================================================= */
 
 {
 title:"6. Occupation / व्यवसाय",
 
-html:`
+html:
+
+image(IMG.occupation,"Occupation")
+
++
+
+`
+
+<label>
+What do you do for living? / आप क्या काम करते हैं?
+</label>
 
 <input
 name="occupation"
@@ -640,9 +878,9 @@ placeholder="Please enter occupation / कृपया व्यवसाय ल
 },
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    INCOME
-   --------------------------------------------------------- */
+   ========================================================= */
 
 {
 title:"7. Annual family income / परिवार की वार्षिक आय",
@@ -654,49 +892,57 @@ A([
 {
 name:"annual_income",
 value:"Less than 1 lakh",
-label:"Less than 1 lakh / 1 लाख से कम"
+label:"Less than 1 lakh / 1 लाख से कम",
+required:true
 },
 
 {
 name:"annual_income",
 value:"1–3 lakh",
-label:"1–3 lakh / 1–3 लाख"
+label:"1–3 lakh / 1–3 लाख",
+required:true
 },
 
 {
 name:"annual_income",
 value:"3–5 lakh",
-label:"3–5 lakh / 3–5 लाख"
+label:"3–5 lakh / 3–5 लाख",
+required:true
 },
 
 {
 name:"annual_income",
 value:"5–7.5 lakh",
-label:"5–7.5 lakh / 5–7.5 लाख"
+label:"5–7.5 lakh / 5–7.5 लाख",
+required:true
 },
 
 {
 name:"annual_income",
 value:"7.5–10 lakh",
-label:"7.5–10 lakh / 7.5–10 लाख"
+label:"7.5–10 lakh / 7.5–10 लाख",
+required:true
 },
 
 {
 name:"annual_income",
 value:"10–20 lakh",
-label:"10–20 lakh / 10–20 लाख"
+label:"10–20 lakh / 10–20 लाख",
+required:true
 },
 
 {
 name:"annual_income",
 value:"More than 20 lakh",
-label:"More than 20 lakh / 20 लाख से अधिक"
+label:"More than 20 lakh / 20 लाख से अधिक",
+required:true
 },
 
 {
 name:"annual_income",
 value:"Prefer not to say",
-label:"Prefer not to say / बताना नहीं चाहते"
+label:"Prefer not to say / बताना नहीं चाहते",
+required:true
 }
 
 ])
@@ -704,20 +950,30 @@ label:"Prefer not to say / बताना नहीं चाहते"
 },
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    CONTENT MONITORING
-   --------------------------------------------------------- */
+   ========================================================= */
 
 {
 title:"8. Content monitoring / सामग्री पर निगरानी",
 
-html:`
+html:
+
+image(IMG.parentsMonitor,"Parents monitoring content")
+
++
+
+`
 
 <p>
+
 Do you monitor what content your child accesses?
+
 <br>
+
 क्या आप अपने बच्चे द्वारा देखी या उपयोग की जाने वाली
 सामग्री पर नज़र रखते हैं?
+
 </p>
 
 `
@@ -729,13 +985,15 @@ A([
 {
 name:"content_monitoring",
 value:"Yes",
-label:"Yes / हाँ"
+label:"Yes / हाँ",
+required:true
 },
 
 {
 name:"content_monitoring",
 value:"No",
-label:"No / नहीं"
+label:"No / नहीं",
+required:true
 }
 
 ])
@@ -743,22 +1001,28 @@ label:"No / नहीं"
 },
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    HEALTH
-   --------------------------------------------------------- */
+   ========================================================= */
 
 {
 title:"9. Health condition or ongoing treatment / स्वास्थ्य संबंधी स्थिति या उपचार",
 
-html:`
+html:
+
+image(IMG.health,"Health-related condition")
+
++
+
+`
 
 <p>
 
 Does your child have any health-related condition or
-ongoing treatment that may affect participation in the
-study activities?
+ongoing treatment that may affect their participation in
+the study activities?
 
-<br>
+<br><br>
 
 क्या आपके बच्चे को कोई ऐसी स्वास्थ्य संबंधी समस्या है
 या उपचार चल रहा है जो अध्ययन की गतिविधियों में भागीदारी
@@ -775,19 +1039,22 @@ A([
 {
 name:"health_condition",
 value:"Yes",
-label:"Yes / हाँ"
+label:"Yes / हाँ",
+required:true
 },
 
 {
 name:"health_condition",
 value:"No",
-label:"No / नहीं"
+label:"No / नहीं",
+required:true
 },
 
 {
 name:"health_condition",
 value:"Prefer not to disclose",
-label:"Prefer not to disclose / बताना नहीं चाहते"
+label:"Prefer not to disclose / बताना नहीं चाहते",
+required:true
 }
 
 ])
@@ -795,9 +1062,9 @@ label:"Prefer not to disclose / बताना नहीं चाहते"
 },
 
 
-/* ---------------------------------------------------------
+/* =========================================================
    CONDITIONS
-   --------------------------------------------------------- */
+   ========================================================= */
 
 {
 title:"10. Conditions / स्थितियाँ",
@@ -810,7 +1077,7 @@ To the best of your knowledge, does your child currently
 have any of the following conditions that may affect
 participation in this study?
 
-<br>
+<br><br>
 
 आपकी जानकारी के अनुसार, क्या आपके बच्चे में निम्नलिखित
 में से कोई स्थिति है?
@@ -864,9 +1131,8 @@ label:"Prefer not to disclose / बताना नहीं चाहते"
 
 
 /* =========================================================
-   ACTIVE SCREEN TIME
+   ACTIVE SCREEN TIME 1
    ========================================================= */
-
 
 {
 title:"Active Screen Time Measurement 1 / स्क्रीन टाइम मापन 1",
@@ -963,6 +1229,10 @@ placeholder="Please specify / कृपया लिखें">
 },
 
 
+/* =========================================================
+   ACTIVE SCREEN TIME 2
+   ========================================================= */
+
 {
 title:"Active Screen Time Measurement 2 / स्क्रीन टाइम मापन 2",
 
@@ -970,24 +1240,65 @@ html:`
 
 <label>
 
-How many digital devices are there in your family in total?
+How many digital devices are there in your family in total
+(e.g., smartphones, tablets/iPads, computers, laptops, etc.)?
 
-<br>
+<br><br>
 
-आपके परिवार में कुल कितने डिजिटल उपकरण हैं?
+आपके परिवार में कुल कितने डिजिटल उपकरण हैं
+(जैसे स्मार्टफोन, टैबलेट/आईपैड, कंप्यूटर, लैपटॉप आदि)?
 
 </label>
 
-<input
-name="total_digital_devices"
-type="number"
-min="0"
-required>
-
 `
+
++
+
+A([
+
+{
+name:"total_digital_devices",
+value:"0",
+label:"0",
+required:true
+},
+
+{
+name:"total_digital_devices",
+value:"1–2",
+label:"1–2",
+required:true
+},
+
+{
+name:"total_digital_devices",
+value:"3–4",
+label:"3–4",
+required:true
+},
+
+{
+name:"total_digital_devices",
+value:"5–6",
+label:"5–6",
+required:true
+},
+
+{
+name:"total_digital_devices",
+value:"More than 6",
+label:"More than 6 / 6 से अधिक",
+required:true
+}
+
+])
 
 },
 
+
+/* =========================================================
+   ACTIVE SCREEN TIME 3
+   ========================================================= */
 
 {
 title:"Active Screen Time Measurement 3 / स्क्रीन टाइम मापन 3",
@@ -1013,13 +1324,15 @@ A([
 {
 name:"personal_mobile",
 value:"Yes",
-label:"Yes / हाँ"
+label:"Yes / हाँ",
+required:true
 },
 
 {
 name:"personal_mobile",
 value:"No",
-label:"No / नहीं"
+label:"No / नहीं",
+required:true
 }
 
 ])
@@ -1027,9 +1340,9 @@ label:"No / नहीं"
 },
 
 
-/* ---------------------------------------------------------
-   MOST USED DEVICE
-   --------------------------------------------------------- */
+/* =========================================================
+   ACTIVE SCREEN TIME 4
+   ========================================================= */
 
 {
 title:"Active Screen Time Measurement 4 / स्क्रीन टाइम मापन 4",
@@ -1133,22 +1446,30 @@ placeholder="Please specify / कृपया लिखें">
 },
 
 
-/* ---------------------------------------------------------
-   DEVICE TIME PREFERENCE
-   --------------------------------------------------------- */
+/* =========================================================
+   ACTIVE SCREEN TIME 5
+   ========================================================= */
 
 {
 title:"Active Screen Time Measurement 5 / स्क्रीन टाइम मापन 5",
 
-html:`
+html:
+
+image(IMG.deviceTime,"When to use digital devices")
+
++
+
+`
 
 <p>
 
-When does your child prefer to use digital devices?
+What time of day does your child usually prefer to use or
+play with digital devices?
 
 <br>
 
-आपका बच्चा डिजिटल उपकरणों का उपयोग कब करना पसंद करता है?
+आपका बच्चा डिजिटल उपकरणों का उपयोग या उनके साथ खेलना
+दिन के किस समय पसंद करता है?
 
 </p>
 
@@ -1198,14 +1519,20 @@ label:"Before bed / सोने से पहले"
 },
 
 
-/* ---------------------------------------------------------
-   TOTAL SCREEN TIME
-   --------------------------------------------------------- */
+/* =========================================================
+   ACTIVE SCREEN TIME 6
+   ========================================================= */
 
 {
 title:"Active Screen Time Measurement 6 / स्क्रीन टाइम मापन 6",
 
-html:dualHours(
+html:
+
+image(IMG.totalTime,"Total screen time")
+
++
+
+dualHours(
 
 "How much total time does your child spend using digital screens? / आपका बच्चा डिजिटल स्क्रीन का उपयोग कुल कितना समय करता है?",
 
@@ -1218,18 +1545,27 @@ html:dualHours(
 },
 
 
-/* ---------------------------------------------------------
-   SCREEN BREAKS
-   --------------------------------------------------------- */
+/* =========================================================
+   ACTIVE SCREEN TIME 7
+   COMBINED SCREEN BREAKS + SESSIONS + DURATION
+   ========================================================= */
 
 {
 title:"Active Screen Time Measurement 7 / स्क्रीन टाइम मापन 7",
 
-html:`
+html:
+
+image(IMG.breaks,"Screen breaks")
+
++
+
+`
 
 <p>
 
-Does your child take breaks while using digital screens?
+<strong>
+1. Does your child take breaks while using digital screens?
+</strong>
 
 <br>
 
@@ -1247,33 +1583,31 @@ A([
 {
 name:"screen_breaks",
 value:"Yes",
-label:"Yes / हाँ"
+label:"Yes / हाँ",
+required:true
 },
 
 {
 name:"screen_breaks",
 value:"No",
-label:"No / नहीं"
+label:"No / नहीं",
+required:true
 }
 
 ])
 
-},
++
 
+`
 
-/* ---------------------------------------------------------
-   SCREEN SESSIONS
-   --------------------------------------------------------- */
-
-{
-title:"Active Screen Time Measurement 8 / स्क्रीन टाइम मापन 8",
-
-html:`
+<hr style="border:0;border-top:1px solid #d7e7f7;margin:25px 0;">
 
 <p>
 
-If yes, how many separate periods or sessions does your
-child usually use digital screens during the day?
+<strong>
+2. If yes, how many separate periods or sessions does
+your child usually use digital screens during the day?
+</strong>
 
 <br>
 
@@ -1291,56 +1625,63 @@ A([
 {
 name:"screen_sessions",
 value:"1 session",
-label:"1 session / 1 बार"
+label:"1 session / 1 बार",
+required:true
 },
 
 {
 name:"screen_sessions",
 value:"2 sessions",
-label:"2 sessions / 2 बार"
+label:"2 sessions / 2 बार",
+required:true
 },
 
 {
 name:"screen_sessions",
 value:"3 sessions",
-label:"3 sessions / 3 बार"
+label:"3 sessions / 3 बार",
+required:true
 },
 
 {
 name:"screen_sessions",
 value:"4 sessions",
-label:"4 sessions / 4 बार"
+label:"4 sessions / 4 बार",
+required:true
 },
 
 {
 name:"screen_sessions",
 value:"5 or more sessions",
-label:"5 or more sessions / 5 या अधिक बार"
+label:"5 or more sessions / 5 या अधिक बार",
+required:true
 }
 
 ])
 
-},
++
 
+`
 
-/* ---------------------------------------------------------
-   SESSION DURATION
-   --------------------------------------------------------- */
-
-{
-title:"Active Screen Time Measurement 9 / स्क्रीन टाइम मापन 9",
-
-html:`
+<hr style="border:0;border-top:1px solid #d7e7f7;margin:25px 0;">
 
 <p>
 
-Please mention the approximate duration of each
+<strong>
+3. Please mention the approximate duration of each
 screen-use session.
+</strong>
 
 <br>
 
 कृपया डिजिटल स्क्रीन के उपयोग की प्रत्येक अवधि का
 अनुमानित समय लिखें।
+
+<br><br>
+
+Example: 1 hour in the morning and 3 hours in the evening.
+<br>
+उदाहरण: सुबह 1 घंटा और शाम को 3 घंटे।
 
 </p>
 
@@ -1355,10 +1696,9 @@ Morning / सुबह
 <input
 name="screen_morning"
 type="text"
-placeholder="e.g., 30 minutes">
+placeholder="hours/minutes">
 
 </div>
-
 
 <div>
 
@@ -1369,10 +1709,9 @@ Afternoon / दोपहर
 <input
 name="screen_afternoon"
 type="text"
-placeholder="e.g., 1 hour">
+placeholder="hours/minutes">
 
 </div>
-
 
 <div>
 
@@ -1383,10 +1722,9 @@ Evening / शाम
 <input
 name="screen_evening"
 type="text"
-placeholder="e.g., 45 minutes">
+placeholder="hours/minutes">
 
 </div>
-
 
 <div>
 
@@ -1397,7 +1735,7 @@ Night / रात
 <input
 name="screen_night"
 type="text"
-placeholder="e.g., 30 minutes">
+placeholder="hours/minutes">
 
 </div>
 
@@ -1408,14 +1746,20 @@ placeholder="e.g., 30 minutes">
 },
 
 
-/* ---------------------------------------------------------
-   RECREATIONAL SCREEN TIME
-   --------------------------------------------------------- */
+/* =========================================================
+   ACTIVE SCREEN TIME 8
+   ========================================================= */
 
 {
-title:"Active Screen Time Measurement 10 / स्क्रीन टाइम मापन 10",
+title:"Active Screen Time Measurement 8 / स्क्रीन टाइम मापन 8",
 
-html:dualHours(
+html:
+
+image(IMG.recreational,"Recreational screen time")
+
++
+
+dualHours(
 
 "How much total time does your child spend using digital screens for recreational purposes? / आपका बच्चा मनोरंजन के लिए डिजिटल स्क्रीन का उपयोग करने में कुल कितना समय बिताता है?",
 
@@ -1428,16 +1772,22 @@ html:dualHours(
 },
 
 
-/* ---------------------------------------------------------
-   ACTIVE RECREATIONAL SCREEN TIME
-   --------------------------------------------------------- */
+/* =========================================================
+   ACTIVE SCREEN TIME 9
+   ========================================================= */
 
 {
-title:"Active Screen Time Measurement 11 / स्क्रीन टाइम मापन 11",
+title:"Active Screen Time Measurement 9 / स्क्रीन टाइम मापन 9",
 
-html:dualHours(
+html:
 
-"How much total time does your child spend using digital screens for active recreational purposes? / आपका बच्चा मनोरंजन के लिए डिजिटल स्क्रीन का सक्रिय रूप से उपयोग करने में कुल कितना समय बिताता है?",
+image(IMG.activeRecreational,"Active recreational screen time")
+
++
+
+dualHours(
+
+"How much total time does your child spend using digital screens for active recreational purposes on a regular school day? / आपका बच्चा नियमित स्कूल के दिन मनोरंजन के लिए डिजिटल स्क्रीन का सक्रिय रूप से उपयोग करने में कुल कितना समय बिताता है?",
 
 "active_recreational_school_day",
 
@@ -1448,14 +1798,16 @@ html:dualHours(
 },
 
 
-/* ---------------------------------------------------------
-   EDUCATIONAL SCREEN TIME
-   --------------------------------------------------------- */
+/* =========================================================
+   ACTIVE SCREEN TIME 10
+   ========================================================= */
 
 {
-title:"Active Screen Time Measurement 12 / स्क्रीन टाइम मापन 12",
+title:"Active Screen Time Measurement 10 / स्क्रीन टाइम मापन 10",
 
-html:dualHours(
+html:
+
+dualHours(
 
 "How much total time does your child spend using digital screens for educational purposes? / आपका बच्चा शैक्षिक उद्देश्यों के लिए डिजिटल स्क्रीन का उपयोग करने में कुल कितना समय बिताता है?",
 
@@ -1468,95 +1820,88 @@ html:dualHours(
 },
 
 
-/* ---------------------------------------------------------
-   RECREATIONAL PURPOSE
-   --------------------------------------------------------- */
+/* =========================================================
+   ACTIVE SCREEN TIME 11
+   ========================================================= */
 
 {
-title:"Active Screen Time Measurement 13 / स्क्रीन टाइम मापन 13",
+title:"Active Screen Time Measurement 11 / स्क्रीन टाइम मापन 11",
 
-html:dualPurpose()
+html:
 
-},
-
-
-/* ---------------------------------------------------------
-   DEVICE IN BED
-   --------------------------------------------------------- */
-
-{
-title:"Active Screen Time Measurement 14 / स्क्रीन टाइम मापन 14",
-
-html:`
-
-<p>
-
-Does your child use a mobile phone, tablet, or other
-digital devices in bed before going to sleep?
-
-<br>
-
-क्या आपका बच्चा सोने से पहले बिस्तर पर मोबाइल, टैबलेट
-या अन्य डिजिटल उपकरणों का इस्तेमाल करता है?
-
-</p>
-
-`
+image(IMG.purpose,"Purpose of recreational digital-device use")
 
 +
 
-A([
-
-{
-name:"device_in_bed_before_sleep",
-value:"Yes",
-label:"Yes / हाँ"
-},
-
-{
-name:"device_in_bed_before_sleep",
-value:"No",
-label:"No / नहीं"
-}
-
-])
+dualPurpose()
 
 },
 
 
 /* =========================================================
-   SLEEP
+   SLEEP MEASURE 1
    ========================================================= */
-
 
 {
 title:"Sleep Measure 1 / नींद मापन 1",
 
-html:dualSleep()
+html:
+
+image(IMG.sleepHours,"Sleep hours")
+
++
+
+dualSleep()
 
 },
 
+
+/* =========================================================
+   SLEEP MEASURE 2
+   ========================================================= */
 
 {
 title:"Sleep Measure 2 / नींद मापन 2",
 
-html:dualWake()
+html:
+
+image(IMG.wakeUp,"Wake-up time")
+
++
+
+dualWake()
 
 },
 
+
+/* =========================================================
+   SLEEP MEASURE 3
+   ========================================================= */
 
 {
 title:"Sleep Measure 3 / नींद मापन 3",
 
-html:dualBed()
+html:
+
+dualBed()
 
 },
 
 
+/* =========================================================
+   SLEEP MEASURE 4
+   ========================================================= */
+
 {
 title:"Sleep Measure 4 / नींद मापन 4",
 
-html:`
+html:
+
+image(IMG.daytimeNap,"Daytime nap")
+
++
+
+`
 
 <p>
 
@@ -1577,13 +1922,15 @@ A([
 {
 name:"daytime_nap",
 value:"Yes",
-label:"Yes / हाँ"
+label:"Yes / हाँ",
+required:true
 },
 
 {
 name:"daytime_nap",
 value:"No",
-label:"No / नहीं"
+label:"No / नहीं",
+required:true
 }
 
 ])
@@ -1633,7 +1980,8 @@ return [
 
 name:name,
 value:String(i+1),
-label:x
+label:x,
+required:true
 
 }));
 
@@ -1643,6 +1991,8 @@ label:x
 function dualHours(q,n1,n2){
 
 return `
+
+<p>${q}</p>
 
 <div class="grid">
 
@@ -1719,7 +2069,8 @@ ${A(arr.map(x=>({
 
 name:n1,
 value:x[0],
-label:x[0]+" / "+x[1]
+label:x[0]+" / "+x[1],
+required:true
 
 })))}
 
@@ -1736,7 +2087,8 @@ ${A(arr.map(x=>({
 
 name:n2,
 value:x[0],
-label:x[0]+" / "+x[1]
+label:x[0]+" / "+x[1],
+required:true
 
 })))}
 
@@ -1798,7 +2150,7 @@ return dualSame(
 
 a,
 
-"At what time does your child go to bed? / आपका बच्चा किस समय सोने जाता है?",
+"When does your child usually go to sleep? / आपका बच्चा किस समय सोने जाता है?",
 
 "bedtime_school_day",
 
@@ -1827,7 +2179,8 @@ ${A(a.map(x=>({
 
 name:n1,
 value:x,
-label:x
+label:x,
+required:true
 
 })))}
 
@@ -1844,7 +2197,8 @@ ${A(a.map(x=>({
 
 name:n2,
 value:x,
-label:x
+label:x,
+required:true
 
 })))}
 
@@ -1893,8 +2247,8 @@ return `
 
 <p>
 
-What is the main purpose for which your child uses
-digital gadgets for recreation?
+What is the main purpose of your child using digital gadgets
+for recreational purposes?
 
 <br>
 
@@ -2225,26 +2579,6 @@ only for academic research purposes.
 
 </p>
 
-
-<h2>
-Demographic Information / जनसांख्यिकीय जानकारी
-</h2>
-
-
-<p>
-
-These variables are collected to understand differences in
-the participants' development, social background, and
-environmental conditions.
-
-<br>
-
-इन जानकारियों को प्रतिभागियों के विकास, सामाजिक पृष्ठभूमि
-और पर्यावरणीय परिस्थितियों में अंतर को समझने के लिए
-एकत्र किया जा रहा है।
-
-</p>
-
 </div>
 
 `;
@@ -2277,7 +2611,6 @@ data[el.name]+", "+el.value
 el.value;
 
 }
-
 else{
 
 data[el.name]=el.value;
@@ -2417,6 +2750,14 @@ document.querySelectorAll("#app [required]");
 
 
 for(const el of required){
+
+if(
+(el.type==="radio" || el.type==="checkbox")
+){
+
+continue;
+
+}
 
 if(!el.value.trim()){
 
@@ -2579,32 +2920,25 @@ Please wait.
 
 const now=new Date();
 
-
 const months=[
 "Jan","Feb","Mar","Apr","May","Jun",
 "Jul","Aug","Sep","Oct","Nov","Dec"
 ];
 
-
 const day=
 String(now.getDate()).padStart(2,"0");
-
 
 const month=
 months[now.getMonth()];
 
-
 const year=
 now.getFullYear();
-
 
 let hours=
 now.getHours();
 
-
 const minutes=
 String(now.getMinutes()).padStart(2,"0");
-
 
 const ampm=
 hours>=12
@@ -2613,10 +2947,8 @@ hours>=12
 :
 "AM";
 
-
 hours=
 hours%12 || 12;
-
 
 const time=
 String(hours).padStart(2,"0")
@@ -2628,7 +2960,6 @@ minutes
 " "
 +
 ampm;
-
 
 const timestamp=
 day
@@ -2644,7 +2975,6 @@ year
 " "
 +
 time;
-
 
 data.submittedAt=timestamp;
 
@@ -2690,15 +3020,11 @@ Thank you! / धन्यवाद!
 </h1>
 
 <p>
-
 Your response has been submitted successfully.
-
 </p>
 
 <p>
-
 आपकी प्रतिक्रिया सफलतापूर्वक जमा हो गई है।
-
 </p>
 
 </div>
