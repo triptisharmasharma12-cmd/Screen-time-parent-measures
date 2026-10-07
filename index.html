@@ -2022,6 +2022,17 @@ border-top:1px solid #d7e7f7;
 margin:28px 0;
 ">
 
+`
+
++
+
+`
+<div id="screenBreakDetails">
+`
+
++
+
+`
 
 <p>
 
@@ -2048,31 +2059,31 @@ A([
 {
 name:"screen_sessions",
 value:"1 session",
-label:"1 session / 1 बार",
+label:"1 session / 1 बार"
 },
 
 {
 name:"screen_sessions",
 value:"2 sessions",
-label:"2 sessions / 2 बार",
+label:"2 sessions / 2 बार"
 },
 
 {
 name:"screen_sessions",
 value:"3 sessions",
-label:"3 sessions / 3 बार",
+label:"3 sessions / 3 बार"
 },
 
 {
 name:"screen_sessions",
 value:"4 sessions",
-label:"4 sessions / 4 बार",
+label:"4 sessions / 4 बार"
 },
 
 {
 name:"screen_sessions",
 value:"5 or more sessions",
-label:"5 or more sessions / 5 या अधिक बार",
+label:"5 or more sessions / 5 या अधिक बार"
 }
 
 ])
@@ -2168,6 +2179,8 @@ Night / रात
 name="screen_night"
 type="text"
 placeholder="hours/minutes">
+
+</div>
 
 </div>
 
@@ -3341,6 +3354,70 @@ data[el.name]=el.value;
 
 
 /* =========================================================
+   SCREEN BREAKS SHOW / HIDE LOGIC
+   ========================================================= */
+
+function setupScreenBreakLogic(){
+
+  const details =
+    document.getElementById("screenBreakDetails");
+
+  if(!details) return;
+
+  const radios =
+    document.querySelectorAll(
+      'input[name="screen_breaks"]'
+    );
+
+  function updateScreenBreakDetails(){
+
+    const answer =
+      document.querySelector(
+        'input[name="screen_breaks"]:checked'
+      );
+
+    const showDetails =
+      answer && answer.value === "Yes";
+
+    details.style.display =
+      showDetails ? "block" : "none";
+
+    if(!showDetails){
+
+      document
+        .querySelectorAll(
+          'input[name="screen_sessions"]'
+        )
+        .forEach(el => {
+          el.checked = false;
+        });
+
+      document
+        .querySelectorAll(
+          'input[name="screen_morning"],' +
+          'input[name="screen_afternoon"],' +
+          'input[name="screen_evening"],' +
+          'input[name="screen_night"]'
+        )
+        .forEach(el => {
+          el.value = "";
+        });
+    }
+  }
+
+  radios.forEach(radio => {
+
+    radio.addEventListener(
+      "change",
+      updateScreenBreakDetails
+    );
+
+  });
+
+  updateScreenBreakDetails();
+}
+   
+/* =========================================================
    RENDER
    ========================================================= */
 
@@ -3452,7 +3529,7 @@ el.value=data[k];
 });
 
 });
-
+setupScreenBreakLogic();
 
 document.getElementById("back")
 .style.visibility=
