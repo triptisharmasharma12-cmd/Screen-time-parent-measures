@@ -2006,6 +2006,7 @@ required:true
 name:"screen_breaks",
 value:"No",
 label:"No / नहीं",
+required:true
 }
 
 ])
@@ -2026,7 +2027,7 @@ margin:28px 0;
 +
 
 `
-<div id="screenBreakDetails">
+<div id="screenBreakDetails" style="display:none;">
 `
 
 +
@@ -3629,20 +3630,35 @@ radios.map(x=>x.name)
 
 for(const name of radioNames){
 
+    // If the participant selected "No" for screen breaks,
+    // do not require an answer for screen_sessions.
+    if(name === "screen_sessions"){
 
-const checked=
-document.querySelector(
-`#app input[type=radio][name="${CSS.escape(name)}"]:checked`
-);
+        const screenBreakAnswer =
+        document.querySelector(
+            'input[name="screen_breaks"]:checked'
+        );
 
+        if(
+            screenBreakAnswer &&
+            screenBreakAnswer.value === "No"
+        ){
+            continue;
+        }
+    }
 
-if(!checked){
+    const checked =
+    document.querySelector(
+        `#app input[type=radio][name="${CSS.escape(name)}"]:checked`
+    );
 
-err.style.display="block";
+    if(!checked){
 
-return false;
+        err.style.display="block";
 
-}
+        return false;
+
+    }
 
 }
 
