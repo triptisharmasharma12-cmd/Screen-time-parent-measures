@@ -8,7 +8,7 @@
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
-<title>Measures of Active Screen Time - Students Form</title>
+<title>Measures of Active Screen Time - Parents Form</title>
 
 
 <style>
@@ -848,85 +848,655 @@ ${x.label}
    ========================================================= */
 
 const questions = [
+
+
+/* =========================================================
+   1. DEMOGRAPHIC INFORMATION
+   ========================================================= */
+
 {
-title:"Demographic Information / जनसांख्यिकीय जानकारी",
-html:`<p>These questions help us understand your background and usual routine.<br>ये प्रश्न आपकी पृष्ठभूमि और सामान्य दिनचर्या को समझने में सहायता करते हैं।</p>`
+
+title:
+"1. Demographic Information / जनसांख्यिकीय जानकारी",
+
+html:`
+
+<p
+style="
+color:#5f6b7a;
+line-height:1.6;
+margin-bottom:24px;
+">
+
+These variables are collected to understand differences
+in the participants' development, social background,
+and environmental conditions.
+
+<br><br>
+
+इन जानकारियों को प्रतिभागियों के विकास, सामाजिक पृष्ठभूमि
+और पर्यावरणीय परिस्थितियों में अंतर को समझने के लिए
+एकत्र किया जा रहा है।
+
+</p>
+
+
+<label>
+Name of child / बच्चे का नाम
+</label>
+
+<input
+name="name"
+type="text"
+required>
+
+
+<label>
+Age of child / बच्चे की आयु
+</label>
+
+<input
+name="age"
+type="number"
+min="1"
+max="25"
+required>
+
+
+<label>
+Child's class / बच्चे की कक्षा
+</label>
+
+${A([
+
+{
+name:"grade",
+value:"Class 6",
+label:"Class 6 / कक्षा 6",
+required:true
 },
+
 {
-title:"1. What is your present age? / आपकी वर्तमान आयु कितनी है?",
-html:A([
-{name:"age",value:"10",label:"10 years / 10 वर्ष",required:true},
-{name:"age",value:"11",label:"11 years / 11 वर्ष",required:true},
-{name:"age",value:"12",label:"12 years / 12 वर्ष",required:true},
-{name:"age",value:"13",label:"13 years / 13 वर्ष",required:true},
-{name:"age",value:"14",label:"14 years / 14 वर्ष",required:true},
-{name:"age",value:"15",label:"15 years / 15 वर्ष",required:true}
+name:"grade",
+value:"Class 7",
+label:"Class 7 / कक्षा 7",
+required:true
+},
+
+{
+name:"grade",
+value:"Class 8",
+label:"Class 8 / कक्षा 8",
+required:true
+}
+
+])}
+
+
+<label>
+Your relationship to the child / बच्चे से आपका संबंध
+</label>
+
+${A([
+
+{
+name:"relationship",
+value:"Mother",
+label:"Mother / माता",
+required:true
+},
+
+{
+name:"relationship",
+value:"Father",
+label:"Father / पिता",
+required:true
+},
+
+{
+name:"relationship",
+value:"Guardian",
+label:"Guardian / अभिभावक",
+required:true
+}
+
+])}
+
+`
+
+},
+
+
+/* =========================================================
+   2. AREA
+   ========================================================= */
+
+{
+
+title:
+"2. What type of area do you currently live in? / आप वर्तमान में किस प्रकार के क्षेत्र में रहते हैं?",
+
+html:
+
+imageOptions(
+
+"area",
+
+[
+
+{
+value:"Urban",
+label:"Urban / शहरी",
+image:IMG.urban
+},
+
+{
+value:"Suburban",
+label:"Suburban / उपनगरीय",
+image:IMG.suburban
+},
+
+{
+value:"Rural",
+label:"Rural / ग्रामीण",
+image:IMG.rural
+}
+
+]
+
+)
+
+},
+
+
+/* =========================================================
+   3. HIGHEST EDUCATION
+   ========================================================= */
+
+{
+
+title:
+"3. What is your highest level of education? / आपकी उच्चतम शैक्षिक योग्यता क्या है?",
+
+html:
+
+largeImage(
+IMG.education,
+"Highest education"
+)
+
++
+
+A([
+
+{
+name:"education",
+value:"High School",
+label:"High School / हाई स्कूल",
+required:true
+},
+
+{
+name:"education",
+value:"Intermediate",
+label:"Intermediate / इंटरमीडिएट",
+required:true
+},
+
+{
+name:"education",
+value:"Graduate",
+label:"Graduate / स्नातक",
+required:true
+},
+
+{
+name:"education",
+value:"Post Graduate",
+label:"Post Graduate / स्नातकोत्तर",
+required:true
+},
+
+{
+name:"education",
+value:"Doctorate",
+label:"Doctorate / डॉक्टरेट",
+required:true
+},
+
+{
+name:"education",
+value:"Other",
+label:"Other / अन्य",
+required:true
+}
+
 ])
+
++
+
+`
+
+<div class="other-box">
+
+<label>
+If Other, please specify / यदि अन्य, तो कृपया लिखें
+</label>
+
+<input
+name="education_other"
+type="text"
+placeholder="Please specify / कृपया लिखें">
+
+</div>
+
+`
+
 },
+
+
+/* =========================================================
+   4. FAMILY STRUCTURE
+   ========================================================= */
+
 {
-title:"2. In which grade do you study? / आप किस कक्षा में पढ़ते हैं?",
-html:A([
-{name:"grade",value:"Class 6",label:"Class 6 / कक्षा 6",required:true},
-{name:"grade",value:"Class 7",label:"Class 7 / कक्षा 7",required:true},
-{name:"grade",value:"Class 8",label:"Class 8 / कक्षा 8",required:true}
+
+title:
+"4. What is the structure of your family? / आपके परिवार की संरचना क्या है?",
+
+html:
+
+imageOptions(
+
+"family_structure",
+
+[
+
+{
+value:"Joint Family",
+label:"Joint Family / संयुक्त परिवार",
+image:IMG.joint
+},
+
+{
+value:"Nuclear Family",
+label:"Nuclear Family / एकल परिवार",
+image:IMG.nuclear
+},
+
+{
+value:"Single Parent",
+label:"Single Parent / एकल अभिभावक परिवार",
+image:IMG.singleParent
+}
+
+]
+
+)
+
+},
+
+
+/* =========================================================
+   5. NUMBER OF CHILDREN
+   ========================================================= */
+
+{
+
+title:
+"5. Number of children / बच्चों की संख्या",
+
+html:
+
+A([
+
+{
+name:"number_children",
+value:"0",
+label:"0",
+required:true
+},
+
+{
+name:"number_children",
+value:"1",
+label:"1",
+required:true
+},
+
+{
+name:"number_children",
+value:"2",
+label:"2",
+required:true
+},
+
+{
+name:"number_children",
+value:"3",
+label:"3",
+required:true
+},
+
+{
+name:"number_children",
+value:"More than 3",
+label:"More than 3 / 3 से अधिक",
+required:true
+}
+
 ])
+
 },
+
+
+/* =========================================================
+   6. OCCUPATION
+   ========================================================= */
+
 {
-title:"3. How do you identify your gender? / आप अपने लिंग की पहचान कैसे करते हैं?",
-html:A([
-{name:"gender",value:"Male",label:"Male / पुरुष",required:true},
-{name:"gender",value:"Female",label:"Female / महिला",required:true},
-{name:"gender",value:"Other",label:"Other / अन्य",required:true},
-{name:"gender",value:"Prefer not to say",label:"Prefer not to say / बताना नहीं चाहते",required:true}
+
+title:
+"6. What do you do for living? / आप क्या काम करते हैं?",
+
+html:
+
+largeImage(
+IMG.occupation,
+"Occupation"
+)
+
++
+
+`
+
+<input
+
+name="occupation"
+
+type="text"
+
+required
+
+placeholder=
+"Please enter occupation / कृपया व्यवसाय लिखें">
+
+`
+
+},
+
+
+/* =========================================================
+   7. INCOME
+   ========================================================= */
+
+{
+
+title:
+"7. Annual family income / परिवार की वार्षिक आय",
+
+html:
+
+A([
+
+{
+name:"annual_income",
+value:"Less than 1 lakh",
+label:"Less than 1 lakh / 1 लाख से कम",
+required:true
+},
+
+{
+name:"annual_income",
+value:"1–3 lakh",
+label:"1–3 lakh / 1–3 लाख",
+required:true
+},
+
+{
+name:"annual_income",
+value:"3–5 lakh",
+label:"3–5 lakh / 3–5 लाख",
+required:true
+},
+
+{
+name:"annual_income",
+value:"5–7.5 lakh",
+label:"5–7.5 lakh / 5–7.5 लाख",
+required:true
+},
+
+{
+name:"annual_income",
+value:"7.5–10 lakh",
+label:"7.5–10 lakh / 7.5–10 लाख",
+required:true
+},
+
+{
+name:"annual_income",
+value:"10–20 lakh",
+label:"10–20 lakh / 10–20 लाख",
+required:true
+},
+
+{
+name:"annual_income",
+value:"More than 20 lakh",
+label:"More than 20 lakh / 20 लाख से अधिक",
+required:true
+},
+
+{
+name:"annual_income",
+value:"Prefer not to say",
+label:"Prefer not to say / बताना नहीं चाहते",
+required:true
+}
+
 ])
+
 },
+
+
+/* =========================================================
+   8. CONTENT MONITORING
+   ========================================================= */
+
 {
-title:"4. What type of area do you currently live in? / आप वर्तमान में किस प्रकार के क्षेत्र में रहते हैं?",
-html:imageOptions("area",[
-{value:"Urban",label:"Urban / शहरी क्षेत्र",image:IMG.urban},
-{value:"Suburban",label:"Suburban / उपनगरीय क्षेत्र",image:IMG.suburban},
-{value:"Rural",label:"Rural / ग्रामीण क्षेत्र",image:IMG.rural}
+
+title:
+"8. Content monitoring / सामग्री पर निगरानी",
+
+html:
+
+image(
+IMG.parentsMonitor,
+"Parents monitoring content"
+)
+
++
+
+`
+
+<p>
+
+Do you monitor what content your child accesses?
+
+<br>
+
+क्या आप अपने बच्चे द्वारा देखी या उपयोग की जाने वाली
+सामग्री पर नज़र रखते हैं?
+
+</p>
+
+`
+
++
+
+A([
+
+{
+name:"content_monitoring",
+value:"Yes",
+label:"Yes / हाँ",
+required:true
+},
+
+{
+name:"content_monitoring",
+value:"No",
+label:"No / नहीं",
+required:true
+}
+
 ])
+
 },
+
+
+/* =========================================================
+   9. HEALTH
+   ========================================================= */
+
 {
-title:"5. How many siblings do you have? / आपके कितने भाई-बहन हैं?",
-html:A([
-{name:"siblings",value:"0",label:"0",required:true},
-{name:"siblings",value:"1",label:"1",required:true},
-{name:"siblings",value:"2",label:"2",required:true},
-{name:"siblings",value:"3",label:"3",required:true},
-{name:"siblings",value:">3",label:"More than 3 / 3 से अधिक",required:true}
+
+title:
+"9. Health-related condition / स्वास्थ्य संबंधी स्थिति",
+
+html:
+
+largeImage(
+IMG.health,
+"Health-related condition"
+)
+
++
+
+`
+
+<p>
+
+Does your child have any health-related condition or
+ongoing treatment that may affect their participation
+in the study activities?
+
+<br><br>
+
+क्या आपके बच्चे को कोई ऐसी स्वास्थ्य संबंधी समस्या है
+या उपचार चल रहा है जो अध्ययन की गतिविधियों में भागीदारी
+को प्रभावित कर सकता है?
+
+</p>
+
+`
+
++
+
+A([
+
+{
+name:"health_condition",
+value:"Yes",
+label:"Yes / हाँ",
+required:true
+},
+
+{
+name:"health_condition",
+value:"No",
+label:"No / नहीं",
+required:true
+},
+
+{
+name:"health_condition",
+value:"Prefer not to disclose",
+label:"Prefer not to disclose / बताना नहीं चाहते",
+required:true
+}
+
 ])
+
 },
+
+
+/* =========================================================
+   10. CONDITIONS
+   ========================================================= */
+
 {
-title:"6. What do your parents do for a living? / आपके माता-पिता क्या काम करते हैं?",
-html:`<label>Parents' occupation / माता-पिता का व्यवसाय</label><textarea name="parents_occupation" rows="3" required placeholder="Write here / यहाँ लिखें"></textarea>`
+
+title:
+"10. Conditions / स्थितियाँ",
+
+html:`
+
+<p>
+
+To the best of your knowledge, does your child currently
+have any of the following conditions that may affect
+participation in this study?
+
+<br><br>
+
+आपकी जानकारी के अनुसार, क्या आपके बच्चे में निम्नलिखित
+में से कोई स्थिति है?
+
+</p>
+
+`
+
++
+
+A([
+
+{
+type:"checkbox",
+name:"conditions",
+value:"ADHD",
+label:"ADHD"
 },
+
 {
-title:"7. Do your parents monitor what content you view and how much time you spend using digital gadgets? / क्या आपके माता-पिता इस बात पर नज़र रखते हैं कि आप डिजिटल गैजेट्स पर कौन-सी सामग्री देखते हैं और उनका उपयोग कितने समय तक करते हैं?",
-html:image(IMG.parentsMonitor,"Parents monitoring content")+A([
-{name:"content_monitoring",value:"Yes",label:"Yes / हाँ",required:true},
-{name:"content_monitoring",value:"No",label:"No / नहीं",required:true}
+type:"checkbox",
+name:"conditions",
+value:
+"Specific learning difficulty, such as Dyslexia",
+label:
+"Specific learning difficulty, such as Dyslexia / विशिष्ट अधिगम संबंधी कठिनाई, जैसे डिस्लेक्सिया"
+},
+
+{
+type:"checkbox",
+name:"conditions",
+value:"Neurological condition",
+label:
+"Neurological condition / तंत्रिका संबंधी स्थिति"
+},
+
+{
+type:"checkbox",
+name:"conditions",
+value:"None",
+label:
+"None / इनमें से कोई नहीं"
+},
+
+{
+type:"checkbox",
+name:"conditions",
+value:"Prefer not to disclose",
+label:
+"Prefer not to disclose / बताना नहीं चाहते"
+}
+
 ])
+
 },
-{
-title:"8. Do you have any health-related condition or are you currently receiving any treatment that may affect your participation in the study activities? / क्या आपको कोई ऐसी स्वास्थ्य संबंधी समस्या है या आपका कोई उपचार चल रहा है, जो इस अध्ययन की गतिविधियों में आपकी भागीदारी को प्रभावित कर सकता है?",
-html:largeImage(IMG.health,"Health-related condition")+A([
-{name:"health_condition",value:"Yes",label:"Yes / हाँ",required:true},
-{name:"health_condition",value:"No",label:"No / नहीं",required:true},
-{name:"health_condition",value:"Prefer not to disclose",label:"Prefer not to disclose / बताना नहीं चाहते",required:true}
-])
-},
-{
-title:"9. To the best of your knowledge, do you currently have any of the following conditions that may affect your participation in this study? / आपकी जानकारी के अनुसार, क्या वर्तमान में आपको निम्नलिखित में से कोई ऐसी स्थिति है जो इस अध्ययन में आपकी भागीदारी को प्रभावित कर सकती है?",
-html:A([
-{type:"checkbox",name:"conditions",value:"ADHD",label:"ADHD"},
-{type:"checkbox",name:"conditions",value:"Specific learning difficulty, such as Dyslexia",label:"Specific learning difficulty, such as Dyslexia / विशिष्ट अधिगम संबंधी कठिनाई, जैसे डिस्लेक्सिया"},
-{type:"checkbox",name:"conditions",value:"Neurological condition",label:"Neurological condition / तंत्रिका संबंधी स्थिति"},
-{type:"checkbox",name:"conditions",value:"None",label:"None / इनमें से कोई नहीं"},
-{type:"checkbox",name:"conditions",value:"Prefer not to disclose",label:"Prefer not to disclose / बताना नहीं चाहते"}
-])
-},
+
+
 /* =========================================================
    ACTIVE SCREEN TIME 1
    DEVICE TYPES
@@ -1128,11 +1698,11 @@ html:`
 
 <p>
 
-Do you own a personal mobile phone?
+Does your child own a personal mobile phone?
 
 <br>
 
-क्या आप के पास अपना व्यक्तिगत मोबाइल फ़ोन है?
+क्या आपके बच्चे के पास अपना व्यक्तिगत मोबाइल फ़ोन है?
 
 </p>
 
@@ -1175,7 +1745,7 @@ html:`
 
 <p>
 
-Which device do you use most of the time?
+Which device does your child use most of the time?
 
 <br>
 
@@ -1183,7 +1753,7 @@ Which device do you use most of the time?
 
 <br>
 
-आप ज़्यादातर कौन सा डिवाइस इस्तेमाल करता है?
+आपका बच्चा ज़्यादातर कौन सा डिवाइस इस्तेमाल करता है?
 
 <br>
 
@@ -1297,12 +1867,12 @@ IMG.deviceTime,
 
 <p>
 
-What time of day do you usually prefer to use
+What time of day does your child usually prefer to use
 or play with digital devices?
 
 <br><br>
 
-आप डिजिटल उपकरणों का उपयोग या उनके साथ खेलना
+आपका बच्चा डिजिटल उपकरणों का उपयोग या उनके साथ खेलना
 दिन के किस समय पसंद करता है?
 
 </p>
@@ -1374,7 +1944,7 @@ IMG.total,
 
 dualHours(
 
-"How much total time do you spend using digital screens? / आप डिजिटल स्क्रीन का उपयोग कुल कितना समय बिताते हैं?",
+"How much total time does your child spend using digital screens? / आपका बच्चा डिजिटल स्क्रीन का उपयोग कुल कितना समय करता है?",
 
 "total_screen_school_day",
 
@@ -1409,12 +1979,12 @@ IMG.breaks,
 <p>
 
 <strong>
-1. Do you take breaks while using digital screens?
+1. Does your child take breaks while using digital screens?
 </strong>
 
 <br>
 
-क्या आप डिजिटल स्क्रीन का उपयोग करते समय
+क्या आपका बच्चा डिजिटल स्क्रीन का उपयोग करते समय
 बीच-बीच में ब्रेक लेता है?
 
 </p>
@@ -1469,13 +2039,13 @@ margin:28px 0;
 <strong>
 
 2. If yes, how many separate periods or sessions does
-you usually use digital screens during the day?
+your child usually use digital screens during the day?
 
 </strong>
 
 <br>
 
-यदि हाँ, तो आप आमतौर पर दिन में कितनी अलग-अलग
+यदि हाँ, तो आपका बच्चा आमतौर पर दिन में कितनी अलग-अलग
 अवधि या सत्रों में डिजिटल स्क्रीन का उपयोग करता है?
 
 </p>
@@ -1643,7 +2213,7 @@ IMG.purpose,
 
 dualHours(
 
-"How much total time do you spend using digital screens for recreational purposes? / आप मनोरंजन के लिए डिजिटल स्क्रीन का उपयोग करने में कुल कितना समय बिताता है?",
+"How much total time does your child spend using digital screens for recreational purposes? / आपका बच्चा मनोरंजन के लिए डिजिटल स्क्रीन का उपयोग करने में कुल कितना समय बिताता है?",
 
 "recreational_screen_school_day",
 
@@ -1674,7 +2244,7 @@ IMG.activeRecreational,
 
 dualHours(
 
-"How much total time do you spend using digital screens for active recreational purposes on a regular school day? / आप नियमित स्कूल के दिन मनोरंजन के लिए डिजिटल स्क्रीन का सक्रिय रूप से उपयोग करने में कुल कितना समय बिताता है?",
+"How much total time does your child spend using digital screens for active recreational purposes on a regular school day? / आपका बच्चा नियमित स्कूल के दिन मनोरंजन के लिए डिजिटल स्क्रीन का सक्रिय रूप से उपयोग करने में कुल कितना समय बिताता है?",
 
 "active_recreational_school_day",
 
@@ -1706,7 +2276,7 @@ IMG.educationalTime,
 
 dualHours(
 
-"How much total time do you spend using digital screens for educational purposes? / आप शैक्षिक उद्देश्यों के लिए डिजिटल स्क्रीन का उपयोग करने में कुल कितना समय बिताते हैं?",
+"How much total time does your child spend using digital screens for educational purposes? / आपका बच्चा शैक्षिक उद्देश्यों के लिए डिजिटल स्क्रीन का उपयोग करने में कुल कितना समय बिताता है?",
 
 "educational_screen_school_day",
 
@@ -1832,11 +2402,11 @@ IMG.daytimeNap,
 
 <p>
 
-Do you take a nap or sleep during the daytime?
+Does your child take a nap or sleep during the daytime?
 
 <br>
 
-क्या आप दिन के समय झपकी लेता या सोता है?
+क्या आपका बच्चा दिन के समय झपकी लेता या सोता है?
 
 </p>
 
@@ -1868,12 +2438,12 @@ required:true
 
 <label>
 
-If yes, approximately how many hours do you
+If yes, approximately how many hours does your child
 sleep during the day?
 
 <br>
 
-यदि हाँ, तो आप दिन में लगभग कितने घंटे सोता है?
+यदि हाँ, तो आपका बच्चा दिन में लगभग कितने घंटे सोता है?
 
 </label>
 
@@ -2017,7 +2587,7 @@ return dualFrom(
 
 options,
 
-"How many hours do you sleep? / आप कितने घंटे सोता है?",
+"How many hours does your child sleep? / आपका बच्चा कितने घंटे सोता है?",
 
 "sleep_hours_school_day",
 
@@ -2144,7 +2714,7 @@ return dualSame(
 
 a,
 
-"At what time do you wake up in the morning? / आप सुबह किस समय उठता है?",
+"At what time does your child wake up in the morning? / आपका बच्चा सुबह किस समय उठता है?",
 
 "wake_time_school_day",
 
@@ -2184,7 +2754,7 @@ return dualSame(
 
 a,
 
-"When do you usually go to sleep? / आप किस समय सोने जाता है?",
+"When does your child usually go to sleep? / आपका बच्चा किस समय सोने जाता है?",
 
 "bedtime_school_day",
 
@@ -2318,7 +2888,7 @@ return `
 
 <p>
 
-What is the main purpose for which you uses
+What is the main purpose for which your child uses
 digital gadgets for recreation?
 
 <br>
@@ -2327,7 +2897,7 @@ digital gadgets for recreation?
 
 <br><br>
 
-आप मनोरंजन के लिए डिजिटल गैजेट्स का उपयोग
+आपका बच्चा मनोरंजन के लिए डिजिटल गैजेट्स का उपयोग
 मुख्य रूप से किस उद्देश्य से करता है?
 
 <br>
@@ -2465,7 +3035,7 @@ const introHTML=`
 
 <h1>
 
-Measures for Active Screen Time (Students) /
+Measures for Active Screen Time /
 सक्रिय स्क्रीन टाइम का मापन
 
 </h1>
@@ -2526,7 +3096,7 @@ Purpose / उद्देश्य
 
 <p>
 
-This form is designed to assess your
+This form is designed to assess your child’s
 <strong>screen time</strong>, including the frequency
 and duration of digital device use for recreational
 and educational purposes.
@@ -2539,7 +3109,7 @@ academic research purposes.
 
 <p>
 
-यह प्रपत्र आपके
+यह प्रपत्र आपके बच्चे के
 <strong>स्क्रीन टाइम</strong> का आकलन करने के लिए
 तैयार किया गया है, जिसमें मनोरंजन और शैक्षिक
 उद्देश्यों के लिए डिजिटल उपकरणों के उपयोग की
@@ -2563,7 +3133,7 @@ Instructions / निर्देश
 
 <li>
 
-Please answer each question based on your
+Please answer each question based on your child’s
 usual screen-use pattern.
 
 <br>
@@ -2577,7 +3147,7 @@ usual screen-use pattern.
 
 <li>
 
-Consider your typical daily screen use,
+Consider your child’s typical daily screen use,
 rather than an unusually high or low screen-use day.
 
 <br>
@@ -2665,7 +3235,7 @@ child’s usual screen-use pattern.
 
 <br>
 
-उस विकल्प का चयन करें जो आप के सामान्य
+उस विकल्प का चयन करें जो आपके बच्चे के सामान्य
 स्क्रीन उपयोग को सबसे अच्छी तरह दर्शाता हो।
 
 </li>
@@ -2674,7 +3244,7 @@ child’s usual screen-use pattern.
 <li>
 
 There are no right or wrong answers. Please answer
-honestly and carefully based on your usual routine.
+honestly and carefully based on your child’s usual routine.
 
 <br>
 
