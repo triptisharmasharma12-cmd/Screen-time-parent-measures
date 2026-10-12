@@ -660,6 +660,9 @@ const IMG = {
   occupation:
   "occupation.png",
 
+   income:
+   "income.png"
+
   parentsMonitor:
   "parents monitor.png",
 
@@ -671,7 +674,16 @@ const IMG = {
 
   deviceType:
   "device type.png",
-
+     
+  devices:
+   "devices.png"
+   
+   phone:
+   "phone.png"
+   
+devicesuse:
+"device uses.png"
+   
   breaks:
   "breaks.png",
 
@@ -1228,7 +1240,8 @@ placeholder=
 title:
 "7. Annual family income / परिवार की वार्षिक आय",
 
-html:
+  html:
+    image(IMG.income, "Annual family income") +
 
 A([
 
@@ -1615,7 +1628,9 @@ placeholder=
 title:
 "Active Screen Time Measurement 2 / स्क्रीन टाइम मापन 2",
 
-html:
+
+  html:
+    image(IMG.devices, "devices") +
 
 `
 
@@ -1687,7 +1702,9 @@ required:true
 title:
 "Active Screen Time Measurement 3 / स्क्रीन टाइम मापन 3",
 
-html:`
+
+  html:
+    image(IMG.phone, "phone") +`
 
 <p>
 
@@ -1734,7 +1751,9 @@ required:true
 title:
 "Active Screen Time Measurement 4 / स्क्रीन टाइम मापन 4",
 
-html:`
+
+  html:
+    image(IMG.deviceuse, "Device use") +`
 
 <p>
 
