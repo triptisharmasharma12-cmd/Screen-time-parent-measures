@@ -682,7 +682,7 @@ const IMG = {
    "phone.png",
    
    deviceuse:
-"device uses.png",
+"device use.png",
    
   breaks:
   "breaks.png",
@@ -729,6 +729,12 @@ total:
 
 function image(file,alt="Question image"){
 
+const encodedFile = encodeURI(file);
+const isDeviceUseImage = /device use\.png/i.test(file);
+const errorHandler = isDeviceUseImage
+  ? "if(!this.dataset.tryImages){this.dataset.tryImages='1';this.src='images/device%20use.png';}else if(!this.dataset.tryPlural){this.dataset.tryPlural='1';this.src='device%20uses.png';}else if(!this.dataset.tryUsage){this.dataset.tryUsage='1';this.src='device%20usage.png';}else{this.style.display='none';}"
+  : "if(!this.dataset.tryImages){this.dataset.tryImages='1';this.src='images/" + encodedFile + "';}else{this.style.display='none';}";
+
 return `
 
 <div class="question-image-wrap">
@@ -737,11 +743,13 @@ return `
 
 class="question-image"
 
-src="${encodeURI(file)}"
+src="${encodedFile}"
+
+data-file="${encodedFile}"
 
 alt="${alt}"
 
-onerror="this.style.display='none'">
+onerror="${errorHandler}">
 
 </div>
 
